@@ -106,7 +106,7 @@ button:hover {
 .history-sidebar {
     position: fixed;
     top: 0;
-    right: -500px;
+    right: -300px; /* Hide sidebar by default */
     width: 300px;
     height: 100%;
     background-color: #fff;

@@ -67,6 +67,11 @@ document.getElementById("historyLink").addEventListener("click", () => {
     historySidebar.style.right = historySidebar.style.right === "0px" ? "-300px" : "0px";
 });
 
+// Close history sidebar
+document.getElementById("closeHistoryButton").addEventListener("click", () => {
+    document.getElementById("historySidebar").style.right = "-300px";
+});
+
 // Save search term to history
 function saveSearchHistory(term) {
     let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
@@ -106,14 +111,3 @@ document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 
 // Initialize
 displaySearchHistory();
-
-// Toggle History Sidebar
-document.getElementById("historyLink").addEventListener("click", () => {
-    const historySidebar = document.getElementById("historySidebar");
-    historySidebar.style.right = historySidebar.style.right === "0px" ? "-300px" : "0px";
-});
-
-// Close History Sidebar
-document.getElementById("closeHistoryButton").addEventListener("click", () => {
-    document.getElementById("historySidebar").style.right = "-300px";
-});
