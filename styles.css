@@ -171,3 +171,22 @@ button:hover {
         margin: 20px 0;
     }
 }
+
+.history-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.history-sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.history-sidebar ul li a {
+    color: #0073e6;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.history-sidebar ul li a:hover {
+    text-decoration: underline;
+}

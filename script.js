@@ -74,7 +74,9 @@ document.getElementById("historyLink").addEventListener("click", () => {
 // Save Search History
 function saveSearchHistory(term) {
     let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
-    history.unshift(term); // Add to the beginning of the array
+    if (!history.includes(term)) { // Avoid duplicates
+        history.unshift(term); // Add to the beginning of the array
+    }
     localStorage.setItem("searchHistory", JSON.stringify(history));
     displaySearchHistory();
 }
@@ -83,7 +85,17 @@ function saveSearchHistory(term) {
 function displaySearchHistory() {
     const historyList = document.getElementById("historyList");
     const history = JSON.parse(localStorage.getItem("searchHistory")) || [];
-    historyList.innerHTML = history.map(term => `<li>${term}</li>`).join("");
+    historyList.innerHTML = history.map(term => `<li><a href="#" class="history-term">${term}</a></li>`).join("");
+    
+    // Add click event listeners to history terms
+    document.querySelectorAll(".history-term").forEach(term => {
+        term.addEventListener("click", (e) => {
+            e.preventDefault();
+            const searchTerm = term.textContent;
+            document.getElementById("searchInput").value = searchTerm;
+            searchWord(); // Trigger search
+        });
+    });
 }
 
 // Clear Search History
