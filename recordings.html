@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header with Logo and Hamburger Menu -->
+    <header>
+        <div class="logo">
+            <img src="cherokee_logo.png" alt="Logo">
+        </div>
+        <nav>
+            <div class="menu-icon" id="menuIcon">
+                <svg viewBox="0 0 100 80" width="30" height="30">
+                    <rect width="100" height="10"></rect>
+                    <rect y="30" width="100" height="10"></rect>
+                    <rect y="60" width="100" height="10"></rect>
+                </svg>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="favourites.html">Favourites</a></li>
+                <li><a href="recordings.html">Recordings</a></li>
+                <li><a href="#" id="historyLink">History</a></li>
+                <li><a href="https://kiwadigital.com/cultureq-support/">Support</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Dictionary</h1>
+        <input type="text" id="searchInput" placeholder="Search for a word...">
+        <button onclick="searchWord()">Search</button>
+        <div id="results">
+            <!-- Results will be displayed here -->
+        </div>
+    </div>
+
+    <!-- History Sidebar -->
+    <div class="history-sidebar" id="historySidebar">
+        <h2>Search History</h2>
+        <ul id="historyList"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
