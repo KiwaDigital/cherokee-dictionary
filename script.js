@@ -17,8 +17,6 @@ function loadCSV(file, callback) {
         .catch(error => console.error("Error loading CSV:", error));
 }
 
-
-
 // Perform search and display results
 function searchWord() {
     const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
@@ -29,7 +27,18 @@ function searchWord() {
         saveSearchHistory(searchTerm);
 
         loadCSV("dictionary.csv", data => {
-            const results = data.filter(row => row.Headword.toLowerCase().includes(searchTerm));
+            const results = data.filter(row => {
+                // Search across multiple columns
+                return (
+                    row.Headword.toLowerCase().includes(searchTerm) ||
+                    row["English search 1"].toLowerCase().includes(searchTerm) ||
+                    row["English search 2"].toLowerCase().includes(searchTerm) ||
+                    row["English search 3"].toLowerCase().includes(searchTerm) ||
+                    row["English search 4"].toLowerCase().includes(searchTerm) ||
+                    row["Syllabary"].toLowerCase().includes(searchTerm)
+                );
+            });
+
             if (results.length > 0) {
                 results.forEach(row => {
                     const resultItem = document.createElement("div");
@@ -113,4 +122,3 @@ document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 
 // Initialize
 displaySearchHistory();
-
