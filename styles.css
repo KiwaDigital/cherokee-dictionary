@@ -14,7 +14,7 @@ body {
 }
 
 header {
-    background-color: #0073e6; /* Dark blue header */
+    background-color: #0073e6;
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
@@ -28,6 +28,8 @@ header {
 nav {
     display: flex;
     align-items: center;
+    flex-grow: 1; /* Allow nav to grow and take available space */
+    justify-content: center; /* Center the nav links */
 }
 
 .menu-icon {
@@ -36,7 +38,7 @@ nav {
 }
 
 .menu-icon svg {
-    fill: #fff; /* White hamburger icon */
+    fill: #fff;
 }
 
 .nav-links {
@@ -44,10 +46,11 @@ nav {
     margin: 0;
     padding: 0;
     display: flex;
+    justify-content: center; /* Center the links horizontally */
 }
 
 .nav-links li {
-    margin-left: 20px;
+    margin: 0 15px; /* Adjust spacing between links */
 }
 
 .nav-links a {
@@ -112,14 +115,38 @@ button:hover {
 .history-sidebar {
     position: fixed;
     top: 0;
-    right: -500px; /* Hide sidebar by default */
-    width: 500px;
+    right: -300px;
+    width: 300px;
     height: 100%;
     background-color: #fff;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     transition: right 0.3s ease;
     padding: 20px;
     z-index: 1000;
+}
+
+.history-sidebar h2 {
+    margin-top: 0;
+    color: #0073e6;
+}
+
+#historyList {
+    list-style: none;
+    padding: 0;
+}
+
+#historyList li {
+    margin-bottom: 10px;
+}
+
+#historyList li a {
+    color: #0073e6;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+#historyList li a:hover {
+    text-decoration: underline;
 }
 
 #closeHistoryButton {
@@ -135,21 +162,6 @@ button:hover {
 
 #closeHistoryButton:hover {
     color: #005bb5;
-}
-
-.history-sidebar h2 {
-    margin-top: 0;
-    color: #0073e6;
-}
-
-#historyList {
-    list-style: none;
-    padding: 0;
-}
-
-#historyList li {
-    margin-bottom: 10px;
-    color: #333;
 }
 
 #clearHistoryButton {
@@ -191,23 +203,4 @@ button:hover {
     .nav-links li {
         margin: 20px 0;
     }
-}
-
-.history-sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.history-sidebar ul li {
-    margin-bottom: 10px;
-}
-
-.history-sidebar ul li a {
-    color: #0073e6;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-.history-sidebar ul li a:hover {
-    text-decoration: underline;
 }
