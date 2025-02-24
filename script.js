@@ -55,3 +55,34 @@ function searchWord() {
         resultsDiv.innerHTML = "<p>Please enter a search term.</p>";
     }
 }
+
+// Toggle Menu
+document.getElementById("menuIcon").addEventListener("click", () => {
+    const navLinks = document.getElementById("navLinks");
+    navLinks.classList.toggle("active");
+});
+
+// Toggle History Sidebar
+document.getElementById("historyLink").addEventListener("click", () => {
+    const historySidebar = document.getElementById("historySidebar");
+    historySidebar.style.right = historySidebar.style.right === "0px" ? "-300px" : "0px";
+});
+
+// Save Search History
+function saveSearchHistory(term) {
+    let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+    history.unshift(term); // Add to the beginning of the array
+    if (history.length > 5) history = history.slice(0, 5); // Keep only the last 5 searches
+    localStorage.setItem("searchHistory", JSON.stringify(history));
+    displaySearchHistory();
+}
+
+// Display Search History
+function displaySearchHistory() {
+    const historyList = document.getElementById("historyList");
+    const history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+    historyList.innerHTML = history.map(term => `<li>${term}</li>`).join("");
+}
+
+// Initialize
+displaySearchHistory();
