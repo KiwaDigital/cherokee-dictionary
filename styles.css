@@ -131,6 +131,20 @@ button:hover {
     color: #333;
 }
 
+#clearHistoryButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#clearHistoryButton:hover {
+    background-color: #cc0000;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .menu-icon {
