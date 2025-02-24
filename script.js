@@ -24,6 +24,9 @@ function searchWord() {
     resultsDiv.innerHTML = ""; // Clear previous results
 
     if (searchTerm) {
+        // Save the search term to history
+        saveSearchHistory(searchTerm);
+
         loadCSV("dictionary.csv", data => {
             const results = data.filter(row => row.Headword.toLowerCase().includes(searchTerm));
             if (results.length > 0) {
@@ -72,7 +75,6 @@ document.getElementById("historyLink").addEventListener("click", () => {
 function saveSearchHistory(term) {
     let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
     history.unshift(term); // Add to the beginning of the array
-    if (history.length > 5) history = history.slice(0, 5); // Keep only the last 5 searches
     localStorage.setItem("searchHistory", JSON.stringify(history));
     displaySearchHistory();
 }
@@ -83,6 +85,18 @@ function displaySearchHistory() {
     const history = JSON.parse(localStorage.getItem("searchHistory")) || [];
     historyList.innerHTML = history.map(term => `<li>${term}</li>`).join("");
 }
+
+// Clear Search History
+function clearSearchHistory() {
+    localStorage.removeItem("searchHistory");
+    displaySearchHistory();
+}
+
+// Add Clear History Button
+const clearHistoryButton = document.createElement("button");
+clearHistoryButton.textContent = "Clear History";
+clearHistoryButton.addEventListener("click", clearSearchHistory);
+document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 
 // Initialize
 displaySearchHistory();
