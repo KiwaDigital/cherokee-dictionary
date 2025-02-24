@@ -106,3 +106,14 @@ document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 
 // Initialize
 displaySearchHistory();
+
+// Toggle History Sidebar
+document.getElementById("historyLink").addEventListener("click", () => {
+    const historySidebar = document.getElementById("historySidebar");
+    historySidebar.style.right = historySidebar.style.right === "0px" ? "-300px" : "0px";
+});
+
+// Close History Sidebar
+document.getElementById("closeHistoryButton").addEventListener("click", () => {
+    document.getElementById("historySidebar").style.right = "-300px";
+});
