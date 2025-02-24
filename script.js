@@ -28,14 +28,14 @@ function searchWord() {
 
         loadCSV("dictionary.csv", data => {
             const results = data.filter(row => {
-                // Search across multiple columns
+                // Check if each column exists and is not undefined before calling toLowerCase
                 return (
-                    row.Headword.toLowerCase().includes(searchTerm) ||
-                    row["English search 1"].toLowerCase().includes(searchTerm) ||
-                    row["English search 2"].toLowerCase().includes(searchTerm) ||
-                    row["English search 3"].toLowerCase().includes(searchTerm) ||
-                    row["English search 4"].toLowerCase().includes(searchTerm) ||
-                    row["Syllabary"].toLowerCase().includes(searchTerm)
+                    (row.Headword && row.Headword.toLowerCase().includes(searchTerm)) ||
+                    (row["English search 1"] && row["English search 1"].toLowerCase().includes(searchTerm)) ||
+                    (row["English search 2"] && row["English search 2"].toLowerCase().includes(searchTerm)) ||
+                    (row["English search 3"] && row["English search 3"].toLowerCase().includes(searchTerm)) ||
+                    (row["English search 4"] && row["English search 4"].toLowerCase().includes(searchTerm)) ||
+                    (row["Syllabary"] && row["Syllabary"].toLowerCase().includes(searchTerm))
                 );
             });
 
