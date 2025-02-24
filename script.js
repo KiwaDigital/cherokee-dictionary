@@ -33,6 +33,7 @@ function searchWord() {
 
                     let html = `<h2>${row.Headword}</h2>`;
                     for (const key in row) {
+                        // Skip empty fields
                         if (row[key] && row[key].trim() !== "") {
                             if (key.includes("audio")) {
                                 html += `<p><b>${key}:</b></p>`;
@@ -53,4 +54,4 @@ function searchWord() {
     } else {
         resultsDiv.innerHTML = "<p>Please enter a search term.</p>";
     }
-}// JavaScript Document
+}
