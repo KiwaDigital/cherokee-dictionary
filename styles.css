@@ -107,7 +107,7 @@ button:hover {
     position: fixed;
     top: 0;
     right: -300px; /* Hide sidebar by default */
-    width: 300px;
+    width: 500px;
     height: 100%;
     background-color: #fff;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
