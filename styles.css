@@ -1,6 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Cherokee&display=swap');
+
+body {
+    font-family: 'Noto Sans Cherokee', Arial, sans-serif;
+}
+
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: Noto Sans Cherokee;
     margin: 0;
     padding: 0;
     background-color: #e6f7ff; /* Light blue background */

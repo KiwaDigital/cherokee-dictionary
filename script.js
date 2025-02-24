@@ -1,20 +1,24 @@
-// Load CSV file and process data
-function loadCSV(file, callback) {
+// Load XLSX file and process data
+function loadXLSX(file, callback) {
     fetch(file)
-        .then(response => response.text())
+        .then(response => response.arrayBuffer())
         .then(data => {
-            const rows = data.split("\n");
-            const headers = rows[0].split(",");
-            const results = rows.slice(1).map(row => {
-                const values = row.split(",");
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0]; // Use the first sheet
+            const sheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+            const headers = jsonData[0]; // First row is headers
+            const results = jsonData.slice(1).map(row => {
                 return headers.reduce((obj, header, index) => {
-                    obj[header] = values[index];
+                    obj[header] = row[index];
                     return obj;
                 }, {});
             });
+
             callback(results);
         })
-        .catch(error => console.error("Error loading CSV:", error));
+        .catch(error => console.error("Error loading XLSX:", error));
 }
 
 // Perform search and display results
@@ -26,7 +30,7 @@ function searchWord() {
     if (searchTerm) {
         saveSearchHistory(searchTerm);
 
-        loadCSV("dictionary.csv", data => {
+        loadXLSX("dictionary.xlsx", data => {
             const results = data.filter(row => row.Headword.toLowerCase().includes(searchTerm));
             if (results.length > 0) {
                 results.forEach(row => {
