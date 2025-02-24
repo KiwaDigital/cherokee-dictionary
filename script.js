@@ -1,4 +1,4 @@
-// Load the CSV file
+// Load CSV file and process data
 function loadCSV(file, callback) {
     fetch(file)
         .then(response => response.text())
@@ -17,14 +17,13 @@ function loadCSV(file, callback) {
         .catch(error => console.error("Error loading CSV:", error));
 }
 
-// Search function
+// Perform search and display results
 function searchWord() {
     const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
     const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = ""; // Clear previous results
+    resultsDiv.innerHTML = "";
 
     if (searchTerm) {
-        // Save the search term to history
         saveSearchHistory(searchTerm);
 
         loadCSV("dictionary.csv", data => {
@@ -36,11 +35,9 @@ function searchWord() {
 
                     let html = `<h2>${row.Headword}</h2>`;
                     for (const key in row) {
-                        // Skip empty fields
                         if (row[key] && row[key].trim() !== "") {
                             if (key.includes("audio")) {
-                                html += `<p><b>${key}:</b></p>`;
-                                html += `<audio class="audio-player" controls><source src="${row[key]}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                                html += `<p><b>${key}:</b></p><audio class="audio-player" controls><source src="${row[key]}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                             } else {
                                 html += `<p><b>${key}:</b> ${row[key]}</p>`;
                             }
@@ -59,52 +56,49 @@ function searchWord() {
     }
 }
 
-// Toggle Menu
+// Toggle mobile menu
 document.getElementById("menuIcon").addEventListener("click", () => {
-    const navLinks = document.getElementById("navLinks");
-    navLinks.classList.toggle("active");
+    document.getElementById("navLinks").classList.toggle("active");
 });
 
-// Toggle History Sidebar
+// Toggle history sidebar
 document.getElementById("historyLink").addEventListener("click", () => {
     const historySidebar = document.getElementById("historySidebar");
     historySidebar.style.right = historySidebar.style.right === "0px" ? "-300px" : "0px";
 });
 
-// Save Search History
+// Save search term to history
 function saveSearchHistory(term) {
     let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
-    if (!history.includes(term)) { // Avoid duplicates
-        history.unshift(term); // Add to the beginning of the array
+    if (!history.includes(term)) {
+        history.unshift(term);
+        localStorage.setItem("searchHistory", JSON.stringify(history));
+        displaySearchHistory();
     }
-    localStorage.setItem("searchHistory", JSON.stringify(history));
-    displaySearchHistory();
 }
 
-// Display Search History
+// Display search history
 function displaySearchHistory() {
     const historyList = document.getElementById("historyList");
     const history = JSON.parse(localStorage.getItem("searchHistory")) || [];
     historyList.innerHTML = history.map(term => `<li><a href="#" class="history-term">${term}</a></li>`).join("");
-    
-    // Add click event listeners to history terms
+
     document.querySelectorAll(".history-term").forEach(term => {
         term.addEventListener("click", (e) => {
             e.preventDefault();
-            const searchTerm = term.textContent;
-            document.getElementById("searchInput").value = searchTerm;
-            searchWord(); // Trigger search
+            document.getElementById("searchInput").value = term.textContent;
+            searchWord();
         });
     });
 }
 
-// Clear Search History
+// Clear search history
 function clearSearchHistory() {
     localStorage.removeItem("searchHistory");
     displaySearchHistory();
 }
 
-// Add Clear History Button
+// Add clear history button
 const clearHistoryButton = document.createElement("button");
 clearHistoryButton.textContent = "Clear History";
 clearHistoryButton.addEventListener("click", clearSearchHistory);
