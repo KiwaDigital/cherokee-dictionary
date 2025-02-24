@@ -8,7 +8,7 @@ function loadCSV(file, callback) {
             const results = rows.slice(1).map(row => {
                 const values = row.split(",");
                 return headers.reduce((obj, header, index) => {
-                    obj[header] = values[index];
+                    obj[header] = values[index] || ""; // Ensure empty string for missing values
                     return obj;
                 }, {});
             });
@@ -28,14 +28,18 @@ function searchWord() {
 
         loadCSV("dictionary.csv", data => {
             const results = data.filter(row => {
-                // Check if each column exists and is not undefined before calling toLowerCase
-                return (
-                    (row.Headword && row.Headword.toLowerCase().includes(searchTerm)) ||
-                    (row["English search 1"] && row["English search 1"].toLowerCase().includes(searchTerm)) ||
-                    (row["English search 2"] && row["English search 2"].toLowerCase().includes(searchTerm)) ||
-                    (row["English search 3"] && row["English search 3"].toLowerCase().includes(searchTerm)) ||
-                    (row["English search 4"] && row["English search 4"].toLowerCase().includes(searchTerm)) ||
-                    (row["Syllabary"] && row["Syllabary"].toLowerCase().includes(searchTerm))
+                // Check if each column exists and is a string before calling toLowerCase
+                const columnsToSearch = [
+                    row.Headword,
+                    row["English search 1"],
+                    row["English search 2"],
+                    row["English search 3"],
+                    row["English search 4"],
+                    row["Syllabary"]
+                ];
+
+                return columnsToSearch.some(column => 
+                    typeof column === "string" && column.toLowerCase().includes(searchTerm)
                 );
             });
 
