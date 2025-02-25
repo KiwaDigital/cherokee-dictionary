@@ -1,6 +1,14 @@
 Headword,English search 1,English search 2,English search 3,English search 4,CF1,CF2,CF3,CF4,Page,Item,Entry,POS,Tone and length 1,Segments,Tone and length 2,Syllabary,No,Sub code,Sub entry GR,Entry 1A (red=new translation),Entry 1B,Entry 1C,Entry 1D,Entry 2A,Entry 2B,Entry 3A,Entry 3B,Sentence 1 audio,Sentence 2 audio,Sentence-1 SYLL,Sentence-1 PHON,Sentence-1 ENGL,Sentence-2 SYLL,Sentence-2 PHON,Sentence-2 ENGL,Sentence-3 SYLL,Sentence-3 PHON,Sentence-3 ENGL
-apple,fruit,red,sweet,round,CF1,CF2,CF3,CF4,1,1,Entry1,Noun,Tone1,Seg1,ToneA,Syll1,1,Sub1,SubGR1,Entry1A,Entry1B,Entry1C,Entry1D,Entry2A,Entry2B,Entry3A,Entry3B,https://example.com/audio1.mp3,https://example.com/audio2.mp3,Syll1,Phon1,Engl1,SyllA,PhonA,EnglA,SyllX,PhonX,EnglX
-banana,fruit,yellow,sweet,long,CF1,CF2,CF3,CF4,2,2,Entry2,Noun,Tone2,Seg2,ToneB,Syll2,2,Sub2,SubGR2,Entry2A,Entry2B,Entry2C,Entry2D,Entry2A,Entry2B,Entry3A,Entry3B,https://example.com/audio3.mp3,,Syll2,Phon2,Engl2,SyllB,PhonB,EnglB,SyllY,PhonY,EnglY
-cherry,fruit,red,sour,round,CF1,CF2,CF3,CF4,3,3,Entry3,Noun,Tone3,Seg3,ToneC,Syll3,3,Sub3,SubGR3,Entry3A,Entry3B,Entry3C,Entry3D,Entry3A,Entry3B,Entry3A,Entry3B,,https://example.com/audio4.mp3,Syll3,Phon3,Engl3,SyllC,PhonC,EnglC,SyllZ,PhonZ,EnglZ
-ᎠᏧᏣ,boy,,,,,,,,,,,noun,ạchűja,achuja,anichuja,ani:chű:ja,ᎠᏂᏧᏣ,4,,,boy,,,,,,,,entry_0004.1_sentence_1.wav,,Ꮎ ᎠᏂᏧᏣ ᏍᏆᏞᏍᏗ ᏓᎾᏁᎶᎲᏍᎦ.,ná ani:chű:ja sgwà:hle̋:sdi dà:ná:ne:lo:hv́sga,The boys are playing ball.,,,,,,
-ᎠᏧᏣ,boys,,,,,,,,,,,noun,ạchűja,achuja,anichuja,ani:chű:ja,ᎠᏂᏧᏣ,4,,,boys,,,,,,,,entry_0004.1_sentence_1.wav,,Ꮎ ᎠᏂᏧᏣ ᏍᏆᏞᏍᏗ ᏓᎾᏁᎶᎲᏍᎦ.,ná ani:chű:ja sgwà:hle̋:sdi dà:ná:ne:lo:hv́sga,The boys are playing ball.,,,,,,
+ᎠᏧᏣ,boy,,,,,,,,,,,Noun,ạchűja,anichuja,ani:chű:ja,ᎠᏂᏧᏣ,4,,,,boy,,,,,,,entry_0004.1_sentence_1.wav,,Ꮎ ᎠᏂᏧᏣ ᏍᏆᏞᏍᏗ ᏓᎾᏁᎶᎲᏍᎦ.,ná ani:chű:ja sgwà:hle̋:sdi dà:ná:ne:lo:hv́sga,The boys are playing ball.,,,,,,,
+ᎠᏧᏣ,boys,,,,,,,,,,,Noun,ạchűja,anichuja,ani:chű:ja,ᎠᏂᏧᏣ,4,,,,boys,,,,,,,entry_0004.1_sentence_1.wav,,Ꮎ ᎠᏂᏧᏣ ᏍᏆᏞᏍᏗ ᏓᎾᏁᎶᎲᏍᎦ.,ná ani:chű:ja sgwà:hle̋:sdi dà:ná:ne:lo:hv́sga,The boys are playing ball.,,,,,,,
+ᎠᏨᏯ,male animal,,,,julịchv̌yàsdi,,,,,,,Noun,ạchvya,achvya,achv:ya,ᎠᏨᏯ,5,,,,male (animal),,,,,,,entry_0005.1_sentence_1.wav,,ᏥᏔᎦ ᎠᏂᏨᏯ ᎤᎩᏥᏍᏕᏱ ᎠᎾᏴᎪᎢ.,jitǎ:ga ani:chv:ya u:gitsde̋:yi à:ná:yhgó:'i,Roosters crow at dawn.,,,,,,
+ᎠᏂᏨᏯ,males animal,,,,,,,,,,,Noun,ạnichvya,anichvya,ani:chv:ya,ᎠᏂᏨᏯ,5,,,,males (animal),,,,,,,entry_0005.1_sentence_1.wav,,ᏥᏔᎦ ᎠᏂᏨᏯ ᎤᎩᏥᏍᏕᏱ ᎠᎾᏴᎪᎢ.,jitǎ:ga ani:chv:ya u:gitsde̋:yi à:ná:yhgó:'i,Roosters crow at dawn.,,,,,,
+ᎠᏓ,wood,,,,,,,,,,,noun,ạda,ada,ada,ᎠᏓ,6,,,,,,,,,,,entry_0006.1_sentence_1.wav,,ᎯᎳ ᏧᎬᏩᎶᏗ ᏌᏊ ᎢᎦᏒᏘ ᎠᏓ?,hila̋: ju:gv̋:walhdi sà:gwű i:gâ:sv̋:ti ada,How much does one rick of wood cost?,,,,,,
+ᎠᏓ,young animal (animal born in a litter or hatched),,,,ạgi̋na,àdạdéga,àdạdǐnv̂dịha,,,,,noun,ạ̋'da,a'da,a̋'da,ᎠᏓ,7,,,,,,,,,,,entry_0007.1_sentence_1.wav,,ᏥᏔᎦ ᎠᏂᏓ ᏧᏛᎯᏍᏙᏗ ᎠᏓᏅᏖᎭ.,jitǎ:ga ani̋:da ju:tvhisdóhdi̋ à:da:nhtě:ha,He's thinking about raising chicks.,,,,,,
+ᎠᏂᏓ,young animals (animals born in a litter or hatched),,,,,,,,,,,noun,ạni̋da,anida,ani̋:da,ᎠᏂᏓ,7,,,,,,,,,,,,,,,,,,,,,
+ᎠᏓᏕᎦ,it's bouncing,,,,àdạdéga,,,,,,,v.i.,àdạdéga,adadega,à:dadé:ga,ᎠᏓᏕᎦ,8,,,,,,,,,,,entry_0008.1_sentence_1.wav,,ᎡᎳᏗ ᏭᏗᎾ ᏍᏆᏞᏍᏗ ᎤᏓᏗᏅᏒᎢ.,e:ladí wǔ:di̋:na sgwà:hle̋:sdi ù:dadi:nv̂:sv̌:'i,"When he threw the ball down, it bounced.",,,,,,
+ᎦᏓᏕᎦ,I'm bouncing  ,,,,,,,,,,,v.i.,gạdạdéga,gadadega,gadadé:ga,ᎦᏓᏕᎦ,8,,,,,,,,,,,,,,,,,,,,,
+ᎤᏓᏗᏅᏒᎢ,it bounced  ,,,,,,,,,,,v.i.,ùdạdǐnv̂sv̌'i,udadinvsv'i,ù:dadǐ:nv̂:sv̌:'i,ᎤᏓᏗᏅᏒᎢ,8,,,,,,,,,,,,,,,,,,,,,
+ᎠᏓᏕᎪᎢ,it bounces ,,,,,,,,,,,v.i.,àdạdégó'i,adadego'i,à:dadé:gó:'i,ᎠᏓᏕᎪᎢ,8,,,,,,,,,,,,,,,,,,,,,
+ᎭᏓᏚᎦ,bounce!,,,,,,,,,,,v.i.,hạdạdùga,hadaduga,hadadù:ga,ᎭᏓᏚᎦ,8,,,,,,,,,,,,,,,,,,,,,
+ᎤᏓᏗᏅᏗ,to bounce ,,,,,,,,,,,v.i.,udạdǐnv̂di,udadinvdi,u:dadǐ:nv̂:di,ᎤᏓᏗᏅᏗ,8,,,,,,,,,,,,,,,,,,,,,
