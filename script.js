@@ -100,18 +100,32 @@ function addToFavourites(text) {
     }
 }
 
-// Share result
+// Share result with a direct link to the word
 function shareResult(text) {
+    const shareUrl = `${window.location.origin}${window.location.pathname}?search=${encodeURIComponent(text)}`;
     if (navigator.share) {
         navigator.share({
             title: "Dictionary Result",
-            text: text,
-            url: window.location.href
+            text: `Check out the meaning of "${text}" in the dictionary!`,
+            url: shareUrl
         })
         .then(() => console.log("Shared successfully"))
         .catch(error => console.error("Error sharing:", error));
     } else {
-        alert("Sharing is not supported in your browser. Copy the link manually.");
+        // Fallback for browsers that don't support the Web Share API
+        navigator.clipboard.writeText(shareUrl)
+            .then(() => alert("Link copied to clipboard: " + shareUrl))
+            .catch(() => alert("Failed to copy link."));
+    }
+}
+
+// Check for a search term in the URL on page load
+function checkUrlForSearchTerm() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTerm = urlParams.get("search");
+    if (searchTerm) {
+        document.getElementById("searchInput").value = searchTerm;
+        searchWord();
     }
 }
 
@@ -169,4 +183,5 @@ clearHistoryButton.addEventListener("click", clearSearchHistory);
 document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 
 // Initialize
+checkUrlForSearchTerm(); // Check for a search term in the URL on page load
 displaySearchHistory();
