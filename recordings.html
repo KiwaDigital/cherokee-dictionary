@@ -23,6 +23,24 @@
         #audio-player {
             margin-top: 10px;
         }
+                #waveform {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+        #recording-meter {
+            width: 100%;
+            height: 20px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            background-color: #eee; /* Light gray background */
+        }
+        #meter-level {
+            height: 100%;
+            width: 0%; /* Initial width */
+            background-color: green; /* Green for recording level */
+        }
     </style>
 </head>
 <body>
@@ -54,12 +72,15 @@
         <button onclick="searchWord()">Search</button>
         <div id="results"></div>
 
-        <div id="recording-module">
+  	<div id="recording-module">
             <h2>Audio Recording</h2>
             <button id="record-button">Record</button>
             <button id="stop-button" disabled>Stop</button>
             <button id="save-button" disabled>Save</button>
-            <audio id="audio-player" controls style="display: none;"></audio> 
+            <div id="waveform"></div>  <div id="recording-meter">
+                <div id="meter-level"></div>
+            </div>
+            <audio id="audio-player" controls style="display: none;"></audio>
         </div>
 
     </div>

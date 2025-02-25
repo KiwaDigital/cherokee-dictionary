@@ -185,3 +185,79 @@ document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 // Initialize
 checkUrlForSearchTerm(); // Check for a search term in the URL on page load
 displaySearchHistory();
+
+const waveformCanvas = document.getElementById('waveform');
+        const waveformCtx = waveformCanvas.getContext('2d');
+        const meterLevel = document.getElementById('meter-level');
+        let analyser;
+        let bufferLength;
+        let dataArray;
+
+        recordButton.addEventListener('click', async () => {
+            // ... (your existing recording start logic) ...
+
+            // Initialize audio analysis
+            const audioCtx = new AudioContext();
+            const source = audioCtx.createMediaStreamSource(stream); // Use the same stream
+            analyser = audioCtx.createAnalyser();
+            source.connect(analyser);
+
+            analyser.fftSize = 2048; // Adjust for waveform detail
+            bufferLength = analyser.frequencyBinCount;
+            dataArray = new Uint8Array(bufferLength);
+
+            drawWaveform();
+            updateMeter(); // Start updating the meter
+        });
+
+        stopButton.addEventListener('click', () => {
+            // ... (your existing stop logic) ...
+            if (analyser) {
+                analyser.disconnect(); // Disconnect the analyser
+                analyser = null;
+            }
+        });
+
+        function drawWaveform() {
+            if (!analyser) return; // If not recording, exit.
+
+            analyser.getByteTimeDomainData(dataArray);
+
+            waveformCtx.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+            waveformCtx.beginPath();
+            const sliceWidth = waveformCanvas.width * 1.0 / bufferLength;
+            let x = 0;
+
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = v * waveformCanvas.height / 2;
+
+                if (i === 0) {
+                    waveformCtx.moveTo(x, y);
+                } else {
+                    waveformCtx.lineTo(x, y);
+                }
+                x += sliceWidth;
+            }
+
+            waveformCtx.strokeStyle = 'blue';  // Waveform color
+            waveformCtx.lineTo(waveformCanvas.width, waveformCanvas.height / 2); // Close the line
+            waveformCtx.stroke();
+            requestAnimationFrame(drawWaveform);
+        }
+
+        function updateMeter() {
+            if (!analyser) return;
+
+            analyser.getByteFrequencyData(dataArray); // Use frequency data for meter
+
+            let sum = 0;
+            for (let i = 0; i < bufferLength; i++) {
+                sum += dataArray[i];
+            }
+            const average = sum / bufferLength;
+            const level = (average / 255) * 100; // Normalize to 0-100%
+
+            meterLevel.style.width = level + '%';
+            requestAnimationFrame(updateMeter);
+        }
