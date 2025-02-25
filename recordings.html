@@ -6,9 +6,26 @@
     <title>Dictionary</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Basic styling for the recording module */
+        #recording-module {
+            margin-top: 20px;
+        }
+        #record-button, #stop-button, #save-button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        #record-button { background-color: green; color: white; }
+        #stop-button { background-color: red; color: white; }
+        #save-button { background-color: blue; color: white; }
+        #audio-player {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Header with Logo and Hamburger Menu -->
     <header>
         <div class="logo">
             <img src="cherokee_logo.png" alt="Logo">
@@ -31,22 +48,91 @@
         </nav>
     </header>
 
-    <!-- Main Content -->
     <div class="container">
         <h1>Dictionary</h1>
         <input type="text" id="searchInput" placeholder="Search for a word...">
         <button onclick="searchWord()">Search</button>
-        <div id="results">
-            <!-- Results will be displayed here -->
+        <div id="results"></div>
+
+        <div id="recording-module">
+            <h2>Audio Recording</h2>
+            <button id="record-button">Record</button>
+            <button id="stop-button" disabled>Stop</button>
+            <button id="save-button" disabled>Save</button>
+            <audio id="audio-player" controls style="display: none;"></audio> 
         </div>
+
     </div>
 
-    <!-- History Sidebar -->
     <div class="history-sidebar" id="historySidebar">
         <h2>Search History</h2>
+        <button id="closeHistoryButton">×</button>
         <ul id="historyList"></ul>
     </div>
 
+
+    <script>
+        const recordButton = document.getElementById('record-button');
+        const stopButton = document.getElementById('stop-button');
+        const saveButton = document.getElementById('save-button');
+        const audioPlayer = document.getElementById('audio-player');
+        let mediaRecorder;
+        let chunks = [];
+
+        recordButton.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = e => {
+                    if (e.data.size > 0) {
+                        chunks.push(e.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'audio/wav' }); // Specify audio format (e.g., wav, mp3)
+                    const audioUrl = URL.createObjectURL(blob);
+                    audioPlayer.src = audioUrl;
+                    audioPlayer.style.display = 'block'; // Show the audio player
+                    saveButton.disabled = false;
+                    chunks = []; // Clear chunks for the next recording
+                };
+
+                mediaRecorder.start();
+                recordButton.disabled = true;
+                stopButton.disabled = false;
+            } catch (err) {
+                console.error('Error accessing microphone:', err);
+                // Handle error, e.g., display a message to the user
+            }
+        });
+
+        stopButton.addEventListener('click', () => {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                recordButton.disabled = false;
+                stopButton.disabled = true;
+            }
+        });
+
+        saveButton.addEventListener('click', () => {
+            const blob = new Blob(chunks, { type: 'audio/wav' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'recording.wav'; // Set the filename
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Release the URL
+            saveButton.disabled = true; // Disable save button after saving
+        });
+
+
+        // ... (rest of your existing script.js code) ...
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
