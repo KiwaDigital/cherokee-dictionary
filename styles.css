@@ -203,4 +203,22 @@ button:hover {
     .nav-links li {
         margin: 20px 0;
     }
+    
+    .action-buttons {
+    margin-top: 10px;
+}
+
+.action-buttons button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    background-color: #0073e6;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.action-buttons button:hover {
+    background-color: #005bb5;
+}
 }

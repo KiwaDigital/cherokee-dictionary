@@ -58,7 +58,17 @@ function searchWord() {
                             }
                         }
                     }
-                    html += "<hr>";
+
+                    // Add Copy, Favourite, and Share buttons
+                    html += `
+                        <div class="action-buttons">
+                            <button onclick="copyResult('${row.Headword}')">Copy</button>
+                            <button onclick="addToFavourites('${row.Headword}')">Favourite</button>
+                            <button onclick="shareResult('${row.Headword}')">Share</button>
+                        </div>
+                        <hr>
+                    `;
+
                     resultItem.innerHTML = html;
                     resultsDiv.appendChild(resultItem);
                 });
@@ -68,6 +78,40 @@ function searchWord() {
         });
     } else {
         resultsDiv.innerHTML = "<p>Please enter a search term.</p>";
+    }
+}
+
+// Copy result to clipboard
+function copyResult(text) {
+    navigator.clipboard.writeText(text)
+        .then(() => alert("Copied to clipboard: " + text))
+        .catch(() => alert("Failed to copy text."));
+}
+
+// Add result to favourites
+function addToFavourites(text) {
+    let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+    if (!favourites.includes(text)) {
+        favourites.push(text);
+        localStorage.setItem("favourites", JSON.stringify(favourites));
+        alert("Added to favourites: " + text);
+    } else {
+        alert("Already in favourites: " + text);
+    }
+}
+
+// Share result
+function shareResult(text) {
+    if (navigator.share) {
+        navigator.share({
+            title: "Dictionary Result",
+            text: text,
+            url: window.location.href
+        })
+        .then(() => console.log("Shared successfully"))
+        .catch(error => console.error("Error sharing:", error));
+    } else {
+        alert("Sharing is not supported in your browser. Copy the link manually.");
     }
 }
 
