@@ -23,7 +23,7 @@
         #audio-player {
             margin-top: 10px;
         }
-                #waveform {
+        #waveform {
             width: 100%;
             height: 100px;
             border: 1px solid #ccc;
@@ -72,12 +72,13 @@
         <button onclick="searchWord()">Search</button>
         <div id="results"></div>
 
-  	<div id="recording-module">
+        <div id="recording-module">
             <h2>Audio Recording</h2>
             <button id="record-button">Record</button>
             <button id="stop-button" disabled>Stop</button>
             <button id="save-button" disabled>Save</button>
-            <div id="waveform"></div>  <div id="recording-meter">
+            <div id="waveform"></div>
+            <div id="recording-meter">
                 <div id="meter-level"></div>
             </div>
             <audio id="audio-player" controls style="display: none;"></audio>
@@ -97,8 +98,15 @@
         const stopButton = document.getElementById('stop-button');
         const saveButton = document.getElementById('save-button');
         const audioPlayer = document.getElementById('audio-player');
+        const waveformCanvas = document.getElementById('waveform');
+        const waveformCtx = waveformCanvas.getContext('2d');
+        const meterLevel = document.getElementById('meter-level');
         let mediaRecorder;
         let chunks = [];
+        let analyser;
+        let bufferLength;
+        let dataArray;
+
 
         recordButton.addEventListener('click', async () => {
             try {
@@ -112,20 +120,33 @@
                 };
 
                 mediaRecorder.onstop = () => {
-                    const blob = new Blob(chunks, { type: 'audio/wav' }); // Specify audio format (e.g., wav, mp3)
+                    const blob = new Blob(chunks, { type: 'audio/wav' });
                     const audioUrl = URL.createObjectURL(blob);
                     audioPlayer.src = audioUrl;
-                    audioPlayer.style.display = 'block'; // Show the audio player
+                    audioPlayer.style.display = 'block';
                     saveButton.disabled = false;
-                    chunks = []; // Clear chunks for the next recording
+                    chunks = [];
                 };
 
                 mediaRecorder.start();
                 recordButton.disabled = true;
                 stopButton.disabled = false;
+
+
+                const audioCtx = new AudioContext();
+                const source = audioCtx.createMediaStreamSource(stream);
+                analyser = audioCtx.createAnalyser();
+                source.connect(analyser);
+
+                analyser.fftSize = 2048;
+                bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+
+                drawWaveform();
+                updateMeter();
+
             } catch (err) {
                 console.error('Error accessing microphone:', err);
-                // Handle error, e.g., display a message to the user
             }
         });
 
@@ -134,6 +155,10 @@
                 mediaRecorder.stop();
                 recordButton.disabled = false;
                 stopButton.disabled = true;
+                if (analyser) {
+                    analyser.disconnect();
+                    analyser = null;
+                }
             }
         });
 
@@ -142,17 +167,60 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'recording.wav'; // Set the filename
+            a.download = 'recording.wav';
             a.style.display = 'none';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            URL.revokeObjectURL(url); // Release the URL
-            saveButton.disabled = true; // Disable save button after saving
+            URL.revokeObjectURL(url);
+            saveButton.disabled = true;
         });
 
+        function drawWaveform() {
+            if (!analyser) return;
 
-        // ... (rest of your existing script.js code) ...
+            analyser.getByteTimeDomainData(dataArray);
+
+            waveformCtx.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+            waveformCtx.beginPath();
+            const sliceWidth = waveformCanvas.width * 1.0 / bufferLength;
+            let x = 0;
+
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = v * waveformCanvas.height / 2;
+
+                if (i === 0) {
+                    waveformCtx.moveTo(x, y);
+                } else {
+                    waveformCtx.lineTo(x, y);
+                }
+                x += sliceWidth;
+            }
+
+            waveformCtx.strokeStyle = 'blue';
+            waveformCtx.lineTo(waveformCanvas.width, waveformCanvas.height / 2);
+            waveformCtx.stroke();
+            requestAnimationFrame(drawWaveform);
+        }
+
+        function updateMeter() {
+            if (!analyser) return;
+
+            analyser.getByteFrequencyData(dataArray);
+
+            let sum = 0;
+            for (let i = 0; i < bufferLength; i++) {
+                sum += dataArray[i];
+            }
+            const average = sum / bufferLength;
+            const level = (average / 255) * 100;
+
+            meterLevel.style.width = level + '%';
+            requestAnimationFrame(updateMeter);
+        }
+
+
     </script>
     <script src="script.js"></script>
 </body>
