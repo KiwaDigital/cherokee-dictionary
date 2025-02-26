@@ -19,30 +19,32 @@ function loadCSV(file, callback) {
 
 // Perform search and display results
 function searchWord() {
-    const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
-    const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = "";
-
-    if (searchTerm) {
-        saveSearchHistory(searchTerm);
+    // ... (rest of the function remains the same)
 
         loadCSV("dictionary.csv", data => {
             const results = data.filter(row => {
-                // Check if each column exists and is a string before calling toLowerCase
                 const columnsToSearch = [
                     row.Headword,
                     row["English search 1"],
                     row["English search 2"],
                     row["English search 3"],
                     row["English search 4"],
-                    row["Syllabary"]
+                    row.Syllabary,
+                    row["Entry 1A"], // Added
+                    row["Entry 1B"], // Added
+                    row["Entry 1C"], // Added
+                    row["Entry 1D"], // Added
+                    row["Entry 2A"], // Added
+                    row["Entry 2B"], // Added
+                    row["Entry 3A"], // Added
+                    row["Entry 3B"]  // Added
                 ];
 
-                return columnsToSearch.some(column => 
-                    typeof column === "string" && column.toLowerCase().includes(searchTerm)
+                return columnsToSearch.some(column =>
+                    column != null && typeof column === "string" && column.toLowerCase().includes(searchTerm)
                 );
             });
-
+            
             if (results.length > 0) {
                 results.forEach(row => {
                     const resultItem = document.createElement("div");
