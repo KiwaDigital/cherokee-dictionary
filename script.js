@@ -185,3 +185,29 @@ document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 // Initialize
 checkUrlForSearchTerm(); // Check for a search term in the URL on page load
 displaySearchHistory();
+
+// Display full range of data for a selected word
+function displayFullRange(headword) {
+    loadCSV("dictionary.csv", data => {
+        const result = data.find(row => row.Headword === headword);
+        if (result) {
+            const fullRangeContent = document.getElementById("fullRangeContent");
+            let html = `<h3>${result.Headword}</h3>`;
+            for (const key in result) {
+                if (result[key] && result[key].trim() !== "") {
+                    if (key.includes("audio")) {
+                        html += `<p><b>${key}:</b></p><audio class="audio-player" controls><source src="${result[key]}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                    } else {
+                        html += `<p><b>${key}:</b> ${result[key]}</p>`;
+                    }
+                }
+            }
+            fullRangeContent.innerHTML = html;
+        }
+    });
+}
+
+// Initialize
+loadCSV("dictionary.csv", data => {
+    displayWordList(data);
+});

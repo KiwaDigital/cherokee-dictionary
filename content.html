@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dictionary</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <!-- Header with Logo and Hamburger Menu -->
@@ -34,21 +33,30 @@
 
     <!-- Main Content -->
     <div class="container">
-        <h1>Dictionary<br/>ᏗᎧᏁᎢᏍᏗ ᏕᎦᏛᎬᎢ </h1>
-        <input type="text" id="searchInput" placeholder="ᎠᏯᏍᏗ Search...">
-        <button onclick="searchWord()">ᎠᏯᏍᏗ Search</button>
-        <div id="results">
-            <!-- Results will be displayed here -->
+        <h1>Dictionary</h1>
+        <input type="text" id="searchInput" placeholder="Search for a word...">
+        <button onclick="searchWord()">Search</button>
+
+        <!-- Full List of Headwords and English Search 1 -->
+        <div id="wordList">
+            <h2>Word List</h2>
+            <ul id="wordListItems"></ul>
+        </div>
+
+        <!-- Full Range Display -->
+        <div id="fullRangeDisplay">
+            <h2>Full Details</h2>
+            <div id="fullRangeContent"></div>
         </div>
     </div>
 
     <!-- History Sidebar -->
-<div class="history-sidebar" id="historySidebar">
-    <h2>ᎠᏯᏍᏗ ᎧᏃᎮᏍᎩ<br/>Search History</h2>
-    <button id="closeHistoryButton">×</button> <!-- Close button -->
-    <ul id="historyList"></ul>
-</div>
-
+    <div class="history-sidebar" id="historySidebar">
+        <h2>Search History</h2>
+        <button id="closeHistoryButton">×</button>
+        <ul id="historyList"></ul>
+        <button id="clearHistoryButton">Clear History</button>
+    </div>
 
     <script src="script.js"></script>
 </body>
