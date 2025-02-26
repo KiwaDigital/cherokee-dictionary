@@ -37,9 +37,7 @@ function searchWord() {
                     row["Entry 2B"],
                     row["Entry 3A"],
                     row["Entry 3B"],
-                    row.Segments,           // Added
-                    row["Tone and length 1"], // Added
-                    row["Tone and length 2"]  // Added
+                    row.Segments
                 ];
 
                 return columnsToSearch.some(column =>
