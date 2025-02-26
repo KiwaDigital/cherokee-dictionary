@@ -29,18 +29,17 @@ function searchWord() {
                     row["English search 3"],
                     row["English search 4"],
                     row.Syllabary,
-                    row["Entry 1A"], // Added
-                    row["Entry 1B"], // Added
-                    row["Entry 1C"], // Added
-                    row["Entry 1D"], // Added
-                    row["Entry 2A"], // Added
-                    row["Entry 2B"], // Added
-                    row["Entry 3A"], // Added
-                    row["Entry 3B"],  // Added
-                    row["Tone and length 1"],
-                    row["Tone and length 2"],
-                    row.Segments
-                    
+                    row["Entry 1A"],
+                    row["Entry 1B"],
+                    row["Entry 1C"],
+                    row["Entry 1D"],
+                    row["Entry 2A"],
+                    row["Entry 2B"],
+                    row["Entry 3A"],
+                    row["Entry 3B"],
+                    row.Segments,           // Added
+                    row["Tone and length 1"], // Added
+                    row["Tone and length 2"]  // Added
                 ];
 
                 return columnsToSearch.some(column =>
