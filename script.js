@@ -186,6 +186,16 @@ document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 checkUrlForSearchTerm(); // Check for a search term in the URL on page load
 displaySearchHistory();
 
+
+// Display full list of Headwords and English Search 1
+function displayWordList(data) {
+    const wordListItems = document.getElementById("wordListItems");
+    wordListItems.innerHTML = data.map(row => `
+        <li onclick="displayFullRange('${row.Headword}')">
+            <strong>${row.Headword}</strong>: ${row["English search 1"]}
+        </li>
+    `).join("");
+}
 // Display full range of data for a selected word
 function displayFullRange(headword) {
     loadCSV("dictionary.csv", data => {
