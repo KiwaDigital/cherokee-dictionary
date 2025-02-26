@@ -19,7 +19,6 @@ function loadCSV(file, callback) {
 
 // Perform search and display results
 function searchWord() {
-    // ... (rest of the function remains the same)
 
         loadCSV("dictionary.csv", data => {
             const results = data.filter(row => {
@@ -37,7 +36,11 @@ function searchWord() {
                     row["Entry 2A"], // Added
                     row["Entry 2B"], // Added
                     row["Entry 3A"], // Added
-                    row["Entry 3B"]  // Added
+                    row["Entry 3B"],  // Added
+                    row["Tone and length 1"],
+                    row["Tone and length 2"],
+                    row.Segments
+                    
                 ];
 
                 return columnsToSearch.some(column =>
