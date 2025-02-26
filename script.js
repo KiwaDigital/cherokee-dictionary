@@ -8,7 +8,7 @@ function loadCSV(file, callback) {
             const results = rows.slice(1).map(row => {
                 const values = row.split(",");
                 return headers.reduce((obj, header, index) => {
-                    obj[header] = values[index] || ""; // Ensure empty string for missing values
+                    obj[header] = values[index];
                     return obj;
                 }, {});
             });
@@ -27,22 +27,7 @@ function searchWord() {
         saveSearchHistory(searchTerm);
 
         loadCSV("dictionary.csv", data => {
-            const results = data.filter(row => {
-                // Check if each column exists and is a string before calling toLowerCase
-                const columnsToSearch = [
-                    row.Headword,
-                    row["English search 1"],
-                    row["English search 2"],
-                    row["English search 3"],
-                    row["English search 4"],
-                    row["Syllabary"]
-                ];
-
-                return columnsToSearch.some(column => 
-                    typeof column === "string" && column.toLowerCase().includes(searchTerm)
-                );
-            });
-
+            const results = data.filter(row => row.Headword.toLowerCase().includes(searchTerm));
             if (results.length > 0) {
                 results.forEach(row => {
                     const resultItem = document.createElement("div");
@@ -58,17 +43,7 @@ function searchWord() {
                             }
                         }
                     }
-
-                    // Add Copy, Favourite, and Share buttons
-                    html += `
-                        <div class="action-buttons">
-                            <button onclick="copyResult('${row.Headword}')">Copy</button>
-                            <button onclick="addToFavourites('${row.Headword}')">Favourite</button>
-                            <button onclick="shareResult('${row.Headword}')">Share</button>
-                        </div>
-                        <hr>
-                    `;
-
+                    html += "<hr>";
                     resultItem.innerHTML = html;
                     resultsDiv.appendChild(resultItem);
                 });
@@ -81,69 +56,11 @@ function searchWord() {
     }
 }
 
-// Copy result to clipboard
-function copyResult(text) {
-    navigator.clipboard.writeText(text)
-        .then(() => alert("Copied to clipboard: " + text))
-        .catch(() => alert("Failed to copy text."));
-}
-
-// Add result to favourites
-function addToFavourites(text) {
-    let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
-    if (!favourites.includes(text)) {
-        favourites.push(text);
-        localStorage.setItem("favourites", JSON.stringify(favourites));
-        alert("Added to favourites: " + text);
-    } else {
-        alert("Already in favourites: " + text);
-    }
-}
-
-// Share result with a direct link to the word
-function shareResult(text) {
-    const shareUrl = `${window.location.origin}${window.location.pathname}?search=${encodeURIComponent(text)}`;
-    if (navigator.share) {
-        navigator.share({
-            title: "Dictionary Result",
-            text: `Check out the meaning of "${text}" in the dictionary!`,
-            url: shareUrl
-        })
-        .then(() => console.log("Shared successfully"))
-        .catch(error => console.error("Error sharing:", error));
-    } else {
-        // Fallback for browsers that don't support the Web Share API
-        navigator.clipboard.writeText(shareUrl)
-            .then(() => alert("Link copied to clipboard: " + shareUrl))
-            .catch(() => alert("Failed to copy link."));
-    }
-}
-
-// Check for a search term in the URL on page load
-function checkUrlForSearchTerm() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchTerm = urlParams.get("search");
-    if (searchTerm) {
-        document.getElementById("searchInput").value = searchTerm;
-        searchWord();
-    }
-}
-
 // Toggle mobile menu
 document.getElementById("menuIcon").addEventListener("click", () => {
     document.getElementById("navLinks").classList.toggle("active");
 });
 
-// Toggle history sidebar
-document.getElementById("historyLink").addEventListener("click", () => {
-    const historySidebar = document.getElementById("historySidebar");
-    historySidebar.style.right = historySidebar.style.right === "0px" ? "-300px" : "0px";
-});
-
-// Close history sidebar
-document.getElementById("closeHistoryButton").addEventListener("click", () => {
-    document.getElementById("historySidebar").style.right = "-300px";
-});
 
 // Save search term to history
 function saveSearchHistory(term) {
@@ -183,5 +100,15 @@ clearHistoryButton.addEventListener("click", clearSearchHistory);
 document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 
 // Initialize
-checkUrlForSearchTerm(); // Check for a search term in the URL on page load
 displaySearchHistory();
+
+// Toggle History Sidebar
+document.getElementById("historyLink").addEventListener("click", () => {
+    const historySidebar = document.getElementById("historySidebar");
+    historySidebar.style.right = historySidebar.style.right === "0px" ? "-300px" : "0px";
+});
+
+// Close History Sidebar
+document.getElementById("closeHistoryButton").addEventListener("click", () => {
+    document.getElementById("historySidebar").style.right = "-300px";
+});
