@@ -4,11 +4,11 @@ function loadCSV(file, callback) {
         .then(response => response.text())
         .then(data => {
             const rows = data.split("\n");
-            const headers = rows.split(",");
+            const headers = rows[0].split(",");
             const results = rows.slice(1).map(row => {
                 const values = row.split(",");
                 return headers.reduce((obj, header, index) => {
-                    obj[header] = values[index] || ""; 
+                    obj[header] = values[index] || ""; // Ensure empty string for missing values
                     return obj;
                 }, {});
             });
@@ -28,6 +28,7 @@ function searchWord() {
 
         loadCSV("dictionary.csv", data => {
             const results = data.filter(row => {
+                // Check if each column exists and is a string before calling toLowerCase
                 const columnsToSearch = [
                     row.Headword,
                     row["English search 1"],
@@ -58,6 +59,7 @@ function searchWord() {
                         }
                     }
 
+                    // Add Copy, Favourite, and Share buttons
                     html += `
                         <div class="action-buttons">
                             <button onclick="copyResult('${row.Headword}')">Copy</button>
@@ -88,7 +90,7 @@ function copyResult(text) {
 
 // Add result to favourites
 function addToFavourites(text) {
-    let favourites = JSON.parse(localStorage.getItem("favourites")) ||;
+    let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
     if (!favourites.includes(text)) {
         favourites.push(text);
         localStorage.setItem("favourites", JSON.stringify(favourites));
@@ -110,6 +112,7 @@ function shareResult(text) {
         .then(() => console.log("Shared successfully"))
         .catch(error => console.error("Error sharing:", error));
     } else {
+        // Fallback for browsers that don't support the Web Share API
         navigator.clipboard.writeText(shareUrl)
             .then(() => alert("Link copied to clipboard: " + shareUrl))
             .catch(() => alert("Failed to copy link."));
@@ -144,7 +147,7 @@ document.getElementById("closeHistoryButton").addEventListener("click", () => {
 
 // Save search term to history
 function saveSearchHistory(term) {
-    let history = JSON.parse(localStorage.getItem("searchHistory")) ||;
+    let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
     if (!history.includes(term)) {
         history.unshift(term);
         localStorage.setItem("searchHistory", JSON.stringify(history));
@@ -155,7 +158,7 @@ function saveSearchHistory(term) {
 // Display search history
 function displaySearchHistory() {
     const historyList = document.getElementById("historyList");
-    const history = JSON.parse(localStorage.getItem("searchHistory")) ||;
+    const history = JSON.parse(localStorage.getItem("searchHistory")) || [];
     historyList.innerHTML = history.map(term => `<li><a href="#" class="history-term">${term}</a></li>`).join("");
 
     document.querySelectorAll(".history-term").forEach(term => {
@@ -180,132 +183,5 @@ clearHistoryButton.addEventListener("click", clearSearchHistory);
 document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 
 // Initialize
-checkUrlForSearchTerm(); 
+checkUrlForSearchTerm(); // Check for a search term in the URL on page load
 displaySearchHistory();
-
-
-// Recording-related variables
-const recordButton = document.getElementById('record-button');
-const stopButton = document.getElementById('stop-button');
-const saveButton = document.getElementById('save-button');
-const audioPlayer = document.getElementById('audio-player');
-const waveformCanvas = document.getElementById('waveform');
-const waveformCtx = waveformCanvas.getContext('2d');
-const meterLevel = document.getElementById('meter-level');
-let mediaRecorder;
-let chunks =;
-let analyser;
-let bufferLength;
-let dataArray;
-
-recordButton.addEventListener('click', async () => {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
-
-        mediaRecorder.ondataavailable = e => {
-            if (e.data.size > 0) {
-                chunks.push(e.data);
-            }
-        };
-
-        mediaRecorder.onstop = () => {
-            const blob = new Blob(chunks, { type: 'audio/wav' });
-            const audioUrl = URL.createObjectURL(blob);
-            audioPlayer.src = audioUrl;
-            audioPlayer.style.display = 'block';
-            saveButton.disabled = false;
-            chunks =;
-        };
-
-        mediaRecorder.start();
-        recordButton.disabled = true;
-        stopButton.disabled = false;
-
-        // Initialize audio analysis
-        const audioCtx = new AudioContext();
-        const source = audioCtx.createMediaStreamSource(stream);
-        analyser = audioCtx.createAnalyser();
-        source.connect(analyser);
-
-        analyser.fftSize = 2048;
-        bufferLength = analyser.frequencyBinCount;
-        dataArray = new Uint8Array(bufferLength);
-
-        drawWaveform();
-        updateMeter();
-
-    } catch (err) {
-        console.error('Error accessing microphone:', err);
-    }
-});
-
-stopButton.addEventListener('click', () => {
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
-        mediaRecorder.stop();
-        recordButton.disabled = false;
-        stopButton.disabled = true;
-        if (analyser) {
-            analyser.disconnect();
-            analyser = null;
-        }
-    }
-});
-
-saveButton.addEventListener('click', () => {
-    const blob = new Blob(chunks, { type: 'audio/wav' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'recording.wav';
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    saveButton.disabled = true;
-});
-
-function drawWaveform() {
-    if (!analyser) return;
-
-    analyser.getByteTimeDomainData(dataArray);
-
-    waveformCtx.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height);
-    waveformCtx.beginPath();
-    const sliceWidth = waveformCanvas.width * 1.0 / bufferLength;
-    let x = 0;
-
-    for (let i = 0; i < bufferLength; i++) {
-        const v = dataArray[i] / 128.0;
-        const y = v * waveformCanvas.height / 2;
-
-        if (i === 0) {
-            waveformCtx.moveTo(x, y);
-        } else {
-            waveformCtx.lineTo(x, y);
-        }
-        x += sliceWidth;
-    }
-
-    waveformCtx.strokeStyle = 'blue';
-    waveformCtx.lineTo(waveformCanvas.width, waveformCanvas.height / 2);
-    waveformCtx.stroke();
-    requestAnimationFrame(drawWaveform);
-}
-
-function updateMeter() {
-    if (!analyser) return;
-
-    analyser.getByteFrequencyData(dataArray);
-
-    let sum = 0;
-    for (let i = 0; i < bufferLength; i++) {
-        sum += dataArray[i];
-    }
-    const average = sum / bufferLength;
-    const level = (average / 255) * 100;
-
-    meterLevel.style.width = level + '%';
-    requestAnimationFrame(updateMeter);
-}
