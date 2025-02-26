@@ -35,18 +35,7 @@ function searchWord() {
                     row["English search 2"],
                     row["English search 3"],
                     row["English search 4"],
-                    row["Syllabary"],
-                    row["Entry 1A"],
-                    row["Entry 1B"],
-                    row["Entry 1C"],
-                    row["Entry 1D"],
-                    row["Entry 2A"]
-                    row["Entry 2B"],
-                    row["Entry 3A"],
-                    row["Entry 3B"],
-                    row["Tone and length 1"],
-                    row["Segments"],
-                    row["Tone and length 2"]
+                    row["Syllabary"]
                 ];
 
                 return columnsToSearch.some(column => 
