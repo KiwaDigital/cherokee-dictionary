@@ -33,9 +33,15 @@
 
     <!-- Main Content -->
     <div class="container">
-        <h1>Dictionary</h1>
-        <input type="text" id="searchInput" placeholder="Search for a word...">
-        <button onclick="searchWord()">Search</button>
+        <h1>Dictionary<br/>ᏗᎧᏁᎢᏍᏗ ᏕᎦᏛᎬᎢ </h1>
+        <input type="text" id="searchInput" placeholder="ᎠᏯᏍᏗ Search...">
+        <button onclick="searchWord()">ᎠᏯᏍᏗ Search</button>
+        <div id="results">
+            <!-- Results will be displayed here -->
+        </div>
+    </div>
+
+
 
         <!-- Full List of Headwords and English Search 1 -->
         <div id="wordList">
@@ -51,12 +57,11 @@
     </div>
 
     <!-- History Sidebar -->
-    <div class="history-sidebar" id="historySidebar">
-        <h2>Search History</h2>
-        <button id="closeHistoryButton">×</button>
-        <ul id="historyList"></ul>
-        <button id="clearHistoryButton">Clear History</button>
-    </div>
+<div class="history-sidebar" id="historySidebar">
+    <h2>ᎠᏯᏍᏗ ᎧᏃᎮᏍᎩ<br/>Search History</h2>
+    <button id="closeHistoryButton">×</button> <!-- Close button -->
+    <ul id="historyList"></ul>
+</div>
 
     <script src="script.js"></script>
 </body>
