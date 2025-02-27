@@ -187,32 +187,15 @@ checkUrlForSearchTerm(); // Check for a search term in the URL on page load
 displaySearchHistory();
 
 
-// Display full list of Headwords and Entry 1A, sorted alphabetically by Entry 1A (with fallback)
+// Display full list of Headwords and Entry 1A, sorted alphabetically by Entry 1A
 function displayWordList(data) {
     const wordListItems = document.getElementById("wordListItems");
 
-    // Sort data alphabetically with fallback logic
+    // Sort data alphabetically by Entry 1A
     const sortedData = data.sort((a, b) => {
-        // Define the priority of columns for sorting
-        const columns = [
-            "Entry 1A",
-            "Entry 1B",
-            "Entry 1C",
-            "Entry 1D",
-            "Entry 2A",
-            "Entry 2B",
-            "Entry 3A",
-            "Entry 3B"
-        ];
-
-        // Find the first non-empty value for row A
-        const valueA = columns.find(column => a[column] && a[column].trim() !== "") || "";
-
-        // Find the first non-empty value for row B
-        const valueB = columns.find(column => b[column] && b[column].trim() !== "") || "";
-
-        // Compare the two values
-        return valueA.localeCompare(valueB);
+        const entryA = a["Entry 1A"] || ""; // Handle undefined values
+        const entryB = b["Entry 1A"] || ""; // Handle undefined values
+        return entryA.localeCompare(entryB); // Sort alphabetically
     });
 
     // Display the sorted list
