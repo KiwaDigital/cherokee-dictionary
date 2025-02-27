@@ -187,24 +187,15 @@ checkUrlForSearchTerm(); // Check for a search term in the URL on page load
 displaySearchHistory();
 
 
-// Display full list of Headwords and Entry 1A, sorted alphabetically by Entry 1A
+// Display full list of Headwords and Entry 1A
 function displayWordList(data) {
     const wordListItems = document.getElementById("wordListItems");
-
-    // Sort data alphabetically by Entry 1A
-    const sortedData = data.sort((a, b) => {
-        const entryA = a["Entry 1A"] || ""; // Handle undefined values
-        const entryB = b["Entry 1A"] || ""; // Handle undefined values
-        return entryA.localeCompare(entryB); // Sort alphabetically
-    });
-
-    // Display the sorted list
-    wordListItems.innerHTML = sortedData.map(row => `
+    wordListItems.innerHTML = data.map(row => `
         <li onclick="displayFullRange('${row.Headword}')">
             <strong>${row.Headword}</strong>: ${row["Entry 1A"]}
         </li>
     `).join("");
-}
+}"
 
 // Display full range of data for a selected word
 function displayFullRange(headword) {
