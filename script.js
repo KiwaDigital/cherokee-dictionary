@@ -187,15 +187,59 @@ checkUrlForSearchTerm(); // Check for a search term in the URL on page load
 displaySearchHistory();
 
 
-// Display full list of Headwords and English Search 1
+// Display full list of Headwords and Entry 1A, sorted alphabetically by Entry 1A (with fallback)
 function displayWordList(data) {
     const wordListItems = document.getElementById("wordListItems");
-    wordListItems.innerHTML = data.map(row => `
-        <li onclick="displayFullRange('${row.Headword}')">
-            <strong>${row.Headword}</strong>: ${row["Entry 1A"]}
-        </li>
-    `).join("");
+
+    // Sort data alphabetically with fallback logic
+    const sortedData = data.sort((a, b) => {
+        // Define the priority of columns for sorting
+        const columns = [
+            "Entry 1A",
+            "Entry 1B",
+            "Entry 1C",
+            "Entry 1D",
+            "Entry 2A",
+            "Entry 2B",
+            "Entry 3A",
+            "Entry 3B"
+        ];
+
+        // Find the first non-empty value for row A
+        const valueA = columns.find(column => a[column] && a[column].trim() !== "") || "";
+
+        // Find the first non-empty value for row B
+        const valueB = columns.find(column => b[column] && b[column].trim() !== "") || "";
+
+        // Compare the two values
+        return valueA.localeCompare(valueB);
+    });
+
+    // Display the sorted list
+    wordListItems.innerHTML = sortedData.map(row => {
+        // Collect all non-empty entries
+        const entries = [
+            row["Entry 1A"],
+            row["Entry 1B"],
+            row["Entry 1C"],
+            row["Entry 1D"],
+            row["Entry 2A"],
+            row["Entry 2B"],
+            row["Entry 3A"],
+            row["Entry 3B"]
+        ].filter(entry => entry && entry.trim() !== ""); // Filter out empty values
+
+        // Join the non-empty entries with a comma
+        const entryText = entries.join(", ");
+
+        return `
+            <li onclick="displayFullRange('${row.Headword}')">
+                <strong>${row.Headword}</strong>: ${entryText}
+            </li>
+        `;
+    }).join("");
 }
+
 // Display full range of data for a selected word
 function displayFullRange(headword) {
     loadCSV("dictionary.csv", data => {
