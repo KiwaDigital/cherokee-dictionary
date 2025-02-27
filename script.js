@@ -53,7 +53,7 @@ function searchWord() {
                         if (row[key] && row[key].trim() !== "") {
                             if (key.includes("audio")) {
                                 // Update audio path to include the 'audio/' folder
-                                html += `<p><b>${key}:</b></p><audio class="audio-player" controls><source src="audio/${row[key]}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                                html += `<p><b>${key}:</b></p><audio class="audio-player" controls><source src="Audio/${row[key]}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                             } else {
                                 html += `<p><b>${key}:</b> ${row[key]}</p>`;
                             }
