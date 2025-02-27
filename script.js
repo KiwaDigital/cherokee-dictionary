@@ -1,35 +1,20 @@
-// Load SQLite database and process data
-function loadDB(file, callback) {
-    // Use SQL.js to load the database
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", file, true);
-    xhr.responseType = "arraybuffer";
-
-    xhr.onload = function () {
-        const arrayBuffer = xhr.response;
-        if (arrayBuffer) {
-            // Initialize SQL.js
-            const SQL = window.SQL;
-            SQL().then(function (sql) {
-                const db = new sql.Database(new Uint8Array(arrayBuffer));
-                const results = db.exec("SELECT * FROM dictionary"); // Replace 'dictionary' with your table name
-                const data = results[0].values.map(row => {
-                    const obj = {};
-                    results[0].columns.forEach((column, index) => {
-                        obj[column] = row[index] || ""; // Ensure empty string for missing values
-                    });
+// Load CSV file and process data
+function loadCSV(file, callback) {
+    fetch(file)
+        .then(response => response.text())
+        .then(data => {
+            const rows = data.split("\n");
+            const headers = rows[0].split(",");
+            const results = rows.slice(1).map(row => {
+                const values = row.split(",");
+                return headers.reduce((obj, header, index) => {
+                    obj[header] = values[index] || ""; // Ensure empty string for missing values
                     return obj;
-                });
-                callback(data);
+                }, {});
             });
-        }
-    };
-
-    xhr.onerror = function () {
-        console.error("Error loading database:", xhr.statusText);
-    };
-
-    xhr.send();
+            callback(results);
+        })
+        .catch(error => console.error("Error loading CSV:", error));
 }
 
 // Perform search and display results
@@ -41,7 +26,7 @@ function searchWord() {
     if (searchTerm) {
         saveSearchHistory(searchTerm);
 
-        loadDB("dictionary.db", data => {
+        loadCSV("dictionary.csv", data => {
             const results = data.filter(row => {
                 // Check if each column exists and is a string before calling toLowerCase
                 const columnsToSearch = [
@@ -201,6 +186,7 @@ document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 checkUrlForSearchTerm(); // Check for a search term in the URL on page load
 displaySearchHistory();
 
+
 // Display full list of Headwords and Entry 1A, sorted alphabetically by Entry 1A
 function displayWordList(data) {
     const wordListItems = document.getElementById("wordListItems");
@@ -239,7 +225,7 @@ function displayWordList(data) {
 
 // Display full range of data for a selected word
 function displayFullRange(headword) {
-    loadDB("dictionary.db", data => {
+    loadCSV("dictionary.csv", data => {
         const result = data.find(row => row.Headword === headword);
         if (result) {
             const fullRangeContent = document.getElementById("fullRangeContent");
@@ -259,6 +245,6 @@ function displayFullRange(headword) {
 }
 
 // Initialize
-loadDB("dictionary.db", data => {
+loadCSV("dictionary.csv", data => {
     displayWordList(data);
 });
