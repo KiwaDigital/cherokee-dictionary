@@ -73,18 +73,7 @@ function searchWord() {
                             }
                         }
                     }
-                    html += "<hr>";
-                    resultItem.innerHTML = html;
-                    resultsDiv.appendChild(resultItem);
-                });
-            } else {
-                resultsDiv.innerHTML = "<p>No results found.</p>";
-            }
-        });
-    } else {
-        resultsDiv.innerHTML = "<p>Please enter a search term.</p>";
-    }
-}
+
                     // Add Copy, Favourite, and Share buttons
                     html += `
                         <div class="action-buttons">
@@ -212,7 +201,6 @@ document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 checkUrlForSearchTerm(); // Check for a search term in the URL on page load
 displaySearchHistory();
 
-
 // Display full list of Headwords and Entry 1A, sorted alphabetically by Entry 1A
 function displayWordList(data) {
     const wordListItems = document.getElementById("wordListItems");
@@ -251,7 +239,7 @@ function displayWordList(data) {
 
 // Display full range of data for a selected word
 function displayFullRange(headword) {
-    loadCSV("dictionary.csv", data => {
+    loadDB("dictionary.db", data => {
         const result = data.find(row => row.Headword === headword);
         if (result) {
             const fullRangeContent = document.getElementById("fullRangeContent");
@@ -271,6 +259,6 @@ function displayFullRange(headword) {
 }
 
 // Initialize
-loadCSV("dictionary.csv", data => {
+loadDB("dictionary.db", data => {
     displayWordList(data);
 });
