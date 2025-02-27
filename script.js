@@ -199,28 +199,11 @@ function displayWordList(data) {
     });
 
     // Display the sorted list
-    wordListItems.innerHTML = sortedData.map(row => {
-        // Collect all non-empty entries
-        const entries = [
-            row["Entry 1A"],
-            row["Entry 1B"],
-            row["Entry 1C"],
-            row["Entry 1D"],
-            row["Entry 2A"],
-            row["Entry 2B"],
-            row["Entry 3A"],
-            row["Entry 3B"]
-        ].filter(entry => entry && entry.trim() !== ""); // Filter out empty values
-
-        // Join the non-empty entries with a comma
-        const entryText = entries.join(", ");
-
-        return `
-            <li onclick="displayFullRange('${row.Headword}')">
-                <strong>${row.Headword}</strong>: ${entryText}
-            </li>
-        `;
-    }).join("");
+    wordListItems.innerHTML = sortedData.map(row => `
+        <li onclick="displayFullRange('${row.Headword}')">
+            <strong>${row.Headword}</strong>: ${row["Entry 1A"]}
+        </li>
+    `).join("");
 }
 
 // Display full range of data for a selected word
