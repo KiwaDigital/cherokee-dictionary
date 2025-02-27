@@ -1,20 +1,35 @@
-// Load CSV file and process data
-function loadCSV(file, callback) {
-    fetch(file)
-        .then(response => response.text())
-        .then(data => {
-            const rows = data.split("\n");
-            const headers = rows[0].split(",");
-            const results = rows.slice(1).map(row => {
-                const values = row.split(",");
-                return headers.reduce((obj, header, index) => {
-                    obj[header] = values[index] || ""; // Ensure empty string for missing values
+// Load SQLite database and process data
+function loadDB(file, callback) {
+    // Use SQL.js to load the database
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", file, true);
+    xhr.responseType = "arraybuffer";
+
+    xhr.onload = function () {
+        const arrayBuffer = xhr.response;
+        if (arrayBuffer) {
+            // Initialize SQL.js
+            const SQL = window.SQL;
+            SQL().then(function (sql) {
+                const db = new sql.Database(new Uint8Array(arrayBuffer));
+                const results = db.exec("SELECT * FROM dictionary"); // Replace 'dictionary' with your table name
+                const data = results[0].values.map(row => {
+                    const obj = {};
+                    results[0].columns.forEach((column, index) => {
+                        obj[column] = row[index] || ""; // Ensure empty string for missing values
+                    });
                     return obj;
-                }, {});
+                });
+                callback(data);
             });
-            callback(results);
-        })
-        .catch(error => console.error("Error loading CSV:", error));
+        }
+    };
+
+    xhr.onerror = function () {
+        console.error("Error loading database:", xhr.statusText);
+    };
+
+    xhr.send();
 }
 
 // Perform search and display results
@@ -26,7 +41,7 @@ function searchWord() {
     if (searchTerm) {
         saveSearchHistory(searchTerm);
 
-        loadCSV("dictionary.csv", data => {
+        loadDB("dictionary.db", data => {
             const results = data.filter(row => {
                 // Check if each column exists and is a string before calling toLowerCase
                 const columnsToSearch = [
@@ -58,7 +73,18 @@ function searchWord() {
                             }
                         }
                     }
-
+                    html += "<hr>";
+                    resultItem.innerHTML = html;
+                    resultsDiv.appendChild(resultItem);
+                });
+            } else {
+                resultsDiv.innerHTML = "<p>No results found.</p>";
+            }
+        });
+    } else {
+        resultsDiv.innerHTML = "<p>Please enter a search term.</p>";
+    }
+}
                     // Add Copy, Favourite, and Share buttons
                     html += `
                         <div class="action-buttons">
