@@ -182,6 +182,11 @@ clearHistoryButton.textContent = "Clear History";
 clearHistoryButton.addEventListener("click", clearSearchHistory);
 document.querySelector(".history-sidebar").appendChild(clearHistoryButton);
 
+// Initialize
+checkUrlForSearchTerm(); // Check for a search term in the URL on page load
+displaySearchHistory();
+
+
 // Display full list of Headwords and English Search 1
 function displayWordList(data) {
     const wordListItems = document.getElementById("wordListItems");
@@ -191,7 +196,6 @@ function displayWordList(data) {
         </li>
     `).join("");
 }
-
 // Display full range of data for a selected word
 function displayFullRange(headword) {
     loadCSV("dictionary.csv", data => {
@@ -214,9 +218,6 @@ function displayFullRange(headword) {
 }
 
 // Initialize
-checkUrlForSearchTerm(); // Check for a search term in the URL on page load
-displaySearchHistory();
-
 loadCSV("dictionary.csv", data => {
     displayWordList(data);
 });
