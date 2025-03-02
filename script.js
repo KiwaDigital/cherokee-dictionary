@@ -40,10 +40,6 @@ function searchWord() {
             const columnsToSearch = [
                 row.Headword,
                 row["Translation 1A"],
-                row["English gloss 1"],
-                row["English gloss 2"],
-                row["English gloss 3"],
-                row["English gloss 4"],
                 row.Syllabary
             ];
 
