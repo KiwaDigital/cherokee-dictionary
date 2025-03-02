@@ -22,71 +22,39 @@ function loadCSV(file, callback) {
         .catch(error => console.error("Error loading CSV:", error));
 }
 
-// Perform search and display results
-function searchWord() {
-    const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
-    const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = "";
+// Generate Part of Speech Buttons
+function generatePartOfSpeechButtons(data) {
+    const partOfSpeechButtons = document.getElementById("partOfSpeechButtons");
+    const uniquePartsOfSpeech = [...new Set(data.map(row => row["Part of speech"]))]; // Get unique values
 
-    if (!searchTerm) {
-        resultsDiv.innerHTML = "<p>Please enter a search term.</p>";
-        return;
-    }
+    // Clear existing buttons
+    partOfSpeechButtons.innerHTML = "";
 
-    saveSearchHistory(searchTerm);
-
-    loadCSV("dictionary.csv", data => {
-        const results = data.filter(row => {
-            const columnsToSearch = [
-                row.Headword,
-                row["Entry 1A"],
-                row["English search 2"],
-                row["English search 3"],
-                row["English search 4"],
-                row.Syllabary
-            ];
-
-            return columnsToSearch.some(column => 
-                typeof column === "string" && column.toLowerCase().includes(searchTerm)
-            );
-        });
-
-        if (results.length > 0) {
-            results.forEach(row => {
-                const resultItem = document.createElement("div");
-                resultItem.className = "result-item";
-
-                let html = `<h2>${row.Headword}</h2>`;
-                for (const key in row) {
-                    if (row[key] && row[key].trim() !== "") {
-                        if (key.includes("audio")) {
-                            html += `<p><b>${key}:</b></p><audio class="audio-player" controls><source src="Audio/${row[key]}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
-                        } else if (key === "Part of speech") {
-                            // Link the "Part of speech" value to a PDF
-                            const pdfLink = `path/to/pdf/${row[key].toLowerCase().replace(/\s+/g, '-')}.pdf`;
-                            html += `<p><b>${key}:</b> <a href="${pdfLink}" target="_blank">${row[key]}</a></p>`;
-                        } else {
-                            html += `<p><b>${key}:</b> ${row[key]}</p>`;
-                        }
-                    }
-                }
-
-                html += `
-                    <div class="action-buttons">
-                        <button onclick="copyResult('${row.Headword}')">Copy</button>
-                        <button onclick="addToFavourites('${row.Headword}')">Favourite</button>
-                        <button onclick="shareResult('${row.Headword}')">Share</button>
-                    </div>
-                    <hr>
-                `;
-
-                resultItem.innerHTML = html;
-                resultsDiv.appendChild(resultItem);
-            });
-        } else {
-            resultsDiv.innerHTML = "<p>No results found.</p>";
+    // Create a button for each unique Part of Speech
+    uniquePartsOfSpeech.forEach(part => {
+        if (part.trim() !== "") {
+            const button = document.createElement("button");
+            button.textContent = part;
+            button.addEventListener("click", () => filterByPartOfSpeech(part, data));
+            partOfSpeechButtons.appendChild(button);
         }
     });
+}
+
+// Filter words by Part of Speech
+function filterByPartOfSpeech(partOfSpeech, data) {
+    const filteredData = data.filter(row => row["Part of speech"] === partOfSpeech);
+    displayWordList(filteredData);
+}
+
+// Display full list of Headwords and English Search 1
+function displayWordList(data) {
+    const wordListItems = document.getElementById("wordListItems");
+    wordListItems.innerHTML = data.map(row => `
+        <li onclick="displayFullRange('${row.Headword}')">
+            <strong>${row.Headword}</strong>: ${row["Entry 1A"]}
+        </li>
+    `).join("");
 }
 
 // Display full range of data for a selected word
@@ -101,7 +69,6 @@ function displayFullRange(headword) {
                     if (key.includes("audio")) {
                         html += `<p><b>${key}:</b></p><audio class="audio-player" controls><source src="${result[key]}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     } else if (key === "Part of speech") {
-                        // Link the "Part of speech" value to a PDF
                         const pdfLink = `path/to/pdf/${result[key].toLowerCase().replace(/\s+/g, '-')}.pdf`;
                         html += `<p><b>${key}:</b> <a href="${pdfLink}" target="_blank">${result[key]}</a></p>`;
                     } else {
@@ -113,3 +80,9 @@ function displayFullRange(headword) {
         }
     });
 }
+
+// Initialize
+loadCSV("dictionary.csv", data => {
+    generatePartOfSpeechButtons(data); // Generate Part of Speech buttons
+    displayWordList(data); // Display full word list initially
+});
