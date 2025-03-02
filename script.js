@@ -233,7 +233,7 @@ function displayWordList(data) {
     const wordListItems = document.getElementById("wordListItems");
     wordListItems.innerHTML = data.map(row => `
         <li onclick="displayFullRange('${row.Headword}')">
-            <strong>${row.Headword}</strong>: ${row["Entry 1A"]}
+            <strong>${row.Headword}</strong>: ${row["Translation 1A"]}
         </li>
     `).join("");
 }
