@@ -82,30 +82,63 @@ function searchWord() {
     });
 }
 
-// Generate Part of Speech Buttons
-function generatePartOfSpeechButtons(data) {
-    const partOfSpeechButtons = document.getElementById("partOfSpeechButtons");
+// Generate Part of Speech Dropdown
+function generatePartOfSpeechDropdown(data) {
+    const partOfSpeechDropdown = document.getElementById("partOfSpeechDropdown");
     const uniquePartsOfSpeech = [...new Set(data.map(row => row["Part of speech"]))]; // Get unique values
 
-    // Clear existing buttons
-    partOfSpeechButtons.innerHTML = "";
+    // Clear existing options
+    partOfSpeechDropdown.innerHTML = "";
 
-    // Create a button for each unique Part of Speech
+    // Add a default option
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Select Part of Speech";
+    partOfSpeechDropdown.appendChild(defaultOption);
+
+    // Create an option for each unique Part of Speech
     uniquePartsOfSpeech.forEach(part => {
         if (part.trim() !== "") {
-            const button = document.createElement("button");
-            button.textContent = part;
-            button.addEventListener("click", () => filterByPartOfSpeech(part, data));
-            partOfSpeechButtons.appendChild(button);
+            const option = document.createElement("option");
+            option.value = part;
+            option.textContent = part;
+            partOfSpeechDropdown.appendChild(option);
         }
+    });
+
+    // Add event listener to filter data when an option is selected
+    partOfSpeechDropdown.addEventListener("change", (event) => {
+        const selectedPartOfSpeech = event.target.value;
+        filterByPartOfSpeech(selectedPartOfSpeech, data);
     });
 }
 
 // Filter words by Part of Speech
 function filterByPartOfSpeech(partOfSpeech, data) {
-    const filteredData = data.filter(row => row["Part of speech"] === partOfSpeech);
+    let filteredData;
+    if (partOfSpeech) {
+        filteredData = data.filter(row => row["Part of speech"] === partOfSpeech);
+    } else {
+        filteredData = data; // Show all data if no part of speech is selected
+    }
     displayWordList(filteredData);
 }
+
+// Display full list of Headwords and English Search 1
+function displayWordList(data) {
+    const wordListItems = document.getElementById("wordListItems");
+    wordListItems.innerHTML = data.map(row => `
+        <li onclick="displayFullRange('${row.Headword}')">
+            <strong>${row.Headword}</strong>: ${row["Entry 1A"]}
+        </li>
+    `).join("");
+}
+
+// Initialize
+loadCSV("dictionary.csv", data => {
+    generatePartOfSpeechDropdown(data); // Generate Part of Speech dropdown
+    displayWordList(data); // Display full word list initially
+});
 
 // Copy result to clipboard
 function copyResult(text) {
