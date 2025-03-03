@@ -40,6 +40,10 @@ function searchWord() {
             const columnsToSearch = [
                 row.Headword,
                 row["Translation 1A"],
+                row["English gloss 1"],
+                row["English gloss 2"],
+                row["English gloss 3"],
+                row["English gloss 4"],
                 row.Syllabary
             ];
 
@@ -266,7 +270,7 @@ function displayWordList(data) {
     const wordListItems = document.getElementById("wordListItems");
     wordListItems.innerHTML = data.map(row => `
         <li onclick="displayFullRange('${row.Headword}')">
-            <strong>${row.Headword}</strong>: ${row["Translation 1A"]}
+            <strong>${row.Headword}</strong>: ${row["Entry 1A"]}
         </li>
     `).join("");
 }
@@ -296,3 +300,112 @@ function displayFullRange(headword) {
 loadCSV("dictionary.csv", data => {
     displayWordList(data);
 });
+
+// Add result to favourites
+function addToFavourites(text) {
+    try {
+        let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+        if (!favourites.includes(text)) {
+            favourites.push(text);
+            localStorage.setItem("favourites", JSON.stringify(favourites));
+            alert("Added to favourites: " + text);
+            displayFavourites(); // Update the favourites list
+        } else {
+            alert("Already in favourites: " + text);
+        }
+    } catch (error) {
+        console.error("Error accessing localStorage:", error);
+    }
+}
+
+// Display favourites
+function displayFavourites() {
+    const favouritesList = document.getElementById("favouritesList");
+    try {
+        const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+        favouritesList.innerHTML = favourites.map(term => `
+            <li>
+                <a href="#" class="favourite-term">${term}</a>
+                <button onclick="removeFromFavourites('${term}')">Remove</button>
+            </li>
+        `).join("");
+
+        document.querySelectorAll(".favourite-term").forEach(term => {
+            term.addEventListener("click", (e) => {
+                e.preventDefault();
+                document.getElementById("searchInput").value = term.textContent;
+                searchWord();
+            });
+        });
+    } catch (error) {
+        console.error("Error accessing localStorage:", error);
+    }
+}
+
+// Remove from favourites
+function removeFromFavourites(term) {
+    try {
+        let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+        favourites = favourites.filter(item => item !== term);
+        localStorage.setItem("favourites", JSON.stringify(favourites));
+        displayFavourites(); // Update the favourites list
+    } catch (error) {
+        console.error("Error accessing localStorage:", error);
+    }
+}
+
+// Clear favourites
+function clearFavourites() {
+    try {
+        localStorage.removeItem("favourites");
+        displayFavourites(); // Update the favourites list
+    } catch (error) {
+        console.error("Error accessing localStorage:", error);
+    }
+}
+
+// Toggle favourites sidebar
+document.getElementById("favouritesLink").addEventListener("click", () => {
+    const favouritesSidebar = document.getElementById("favouritesSidebar");
+    favouritesSidebar.style.right = favouritesSidebar.style.right === "0px" ? "-300px" : "0px";
+});
+
+// Close favourites sidebar
+document.getElementById("closeFavouritesButton").addEventListener("click", () => {
+    document.getElementById("favouritesSidebar").style.right = "-300px";
+});
+
+// Add clear favourites button
+const clearFavouritesButton = document.createElement("button");
+clearFavouritesButton.textContent = "Clear Favourites";
+clearFavouritesButton.addEventListener("click", clearFavourites);
+document.querySelector(".favourites-sidebar").appendChild(clearFavouritesButton);
+
+// Initialize
+displayFavourites(); // Display favourites on page load
+
+// Get the modal
+        const modal = document.getElementById("creditsModal");
+
+        // Get the button that opens the modal
+        const btn = document.getElementById("creditsButton");
+
+        // Get the <span> element that closes the modal
+        const span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+        };
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        };
+
+        // When the user clicks anywhere outside the modal, close it
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
