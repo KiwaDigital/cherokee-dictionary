@@ -24,9 +24,6 @@ body {
     justify-content: space-between;
     align-items: center;
 }
-
-
-
 .main {
     margin: 0 auto;
     display: block;
@@ -86,7 +83,6 @@ body {
 input[type="checkbox"]:checked ~ #sidebarMenu {
     transform: translateX(0);
 }
-
 input[type=checkbox] {
     transition: all 0.3s;
     box-sizing: border-box;
@@ -151,7 +147,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     margin-top: -9px;
 }
 
-        /* Modal Styles */
+/* Modal Styles */
         .modal {
             display: none; /* Hidden by default */
             position: fixed;
@@ -203,6 +199,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
         #creditsButton:hover {
             background-color: #45a049;
         }
+
 /* Original CSS*/
 
 .logo img {
