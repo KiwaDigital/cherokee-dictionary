@@ -88,31 +88,31 @@ function searchWord() {
 
 // Generate Part of Speech Dropdown
 function generatePartOfSpeechDropdown(data) {
-    const partOfSpeechDropdown = document.getElementById("partOfSpeechDropdown");
-    const uniquePartsOfSpeech = [...new Set(data.map(row => row["Part of speech"]))]; // Get unique values
+	const partOfSpeechDropdown = document.getElementById("partOfSpeechDropdown");
+    	const uniquePartsOfSpeech = [...new Set(data.map(row => row["Part of speech"]))]; // Get unique values
 
-    // Clear existing options
-    partOfSpeechDropdown.innerHTML = "";
+// Clear existing options
+partOfSpeechDropdown.innerHTML = "";
 
-    // Add a default option
-    const defaultOption = document.createElement("option");
+// Add a default option
+const defaultOption = document.createElement("option");
     defaultOption.value = "";
     defaultOption.textContent = "Select Part of Speech";
     partOfSpeechDropdown.appendChild(defaultOption);
 
-    // Create an option for each unique Part of Speech
-    uniquePartsOfSpeech.forEach(part => {
-        if (part.trim() !== "") {
-            const option = document.createElement("option");
-            option.value = part;
+ // Create an option for each unique Part of Speech
+uniquePartsOfSpeech.forEach(part => {
+    if (part.trim() !== "") {
+        const option = document.createElement("option");
+        	option.value = part;
             option.textContent = part;
             partOfSpeechDropdown.appendChild(option);
         }
     });
 
-    // Add event listener to filter data when an option is selected
-    partOfSpeechDropdown.addEventListener("change", (event) => {
-        const selectedPartOfSpeech = event.target.value;
+// Add event listener to filter data when an option is selected
+partOfSpeechDropdown.addEventListener("change", (event) => {
+    const selectedPartOfSpeech = event.target.value;
         filterByPartOfSpeech(selectedPartOfSpeech, data);
     });
 }
@@ -270,7 +270,7 @@ function displayWordList(data) {
     const wordListItems = document.getElementById("wordListItems");
     wordListItems.innerHTML = data.map(row => `
         <li onclick="displayFullRange('${row.Headword}')">
-            <strong>${row.Headword}</strong>: ${row["Entry 1A"]}
+            <strong>${row.Headword}</strong>: ${row["Translation 1A"]}
         </li>
     `).join("");
 }
@@ -385,27 +385,27 @@ document.querySelector(".favourites-sidebar").appendChild(clearFavouritesButton)
 displayFavourites(); // Display favourites on page load
 
 // Get the modal
-        const modal = document.getElementById("creditsModal");
+const modal = document.getElementById("creditsModal");
 
-        // Get the button that opens the modal
-        const btn = document.getElementById("creditsButton");
+// Get the button that opens the modal
+const btn = document.getElementById("creditsButton");
 
-        // Get the <span> element that closes the modal
-        const span = document.getElementsByClassName("close")[0];
+// Get the <span> element that closes the modal
+const span = document.getElementsByClassName("close")[0];
 
-        // When the user clicks the button, open the modal
-        btn.onclick = function() {
-            modal.style.display = "block";
-        };
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+modal.style.display = "block";
+	};
 
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        };
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+	modal.style.display = "none";
+	};
 
-        // When the user clicks anywhere outside the modal, close it
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
+// When the user clicks anywhere outside the modal, close it
+window.onclick = function(event) {
+	if (event.target === modal) {
+		modal.style.display = "none";
+	}
         };
