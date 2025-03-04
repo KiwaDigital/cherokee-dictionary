@@ -23,17 +23,20 @@ function loadCSV(file, callback) {
 }
 
 // Perform search and display results
-function searchWord() {
-    const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
+function searchWord(searchTerm = null) {
+    const searchInput = document.getElementById("searchInput");
+    const searchTermValue = searchTerm || searchInput.value.trim().toLowerCase();
     const resultsDiv = document.getElementById("results");
     resultsDiv.innerHTML = "";
 
-    if (!searchTerm) {
+    if (!searchTermValue) {
         resultsDiv.innerHTML = "<p>Please enter a search term.</p>";
         return;
     }
 
-    saveSearchHistory(searchTerm);
+    if (!searchTerm) {
+        saveSearchHistory(searchTermValue);
+    }
 
     loadCSV("dictionary.csv", data => {
         const results = data.filter(row => {
@@ -44,11 +47,16 @@ function searchWord() {
                 row["English gloss 2"],
                 row["English gloss 3"],
                 row["English gloss 4"],
-                row.Syllabary
+                row.Syllabary,
+                row.Practical,
+                row["Compare 1"],
+                row["Compare 2"],
+                row["Compare 3"],
+                row["Compare 4"]
             ];
 
             return columnsToSearch.some(column => 
-                typeof column === "string" && column.toLowerCase().includes(searchTerm)
+                typeof column === "string" && column.toLowerCase().includes(searchTermValue)
             );
         });
 
@@ -62,6 +70,9 @@ function searchWord() {
                     if (row[key] && row[key].trim() !== "") {
                         if (key.includes("audio")) {
                             html += `<p><b>${key}:</b></p><audio class="audio-player" controls><source src="Audio/${row[key]}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                        } else if (key === "Practical") {
+                            // Add click event to 'Practical' values
+                            html += `<p><b>${key}:</b> <span class="searchable" onclick="searchWord('${row[key].toLowerCase()}')">${row[key]}</span></p>`;
                         } else {
                             html += `<p><b>${key}:</b> ${row[key]}</p>`;
                         }
@@ -86,6 +97,16 @@ function searchWord() {
     });
 }
 
+// Add CSS for the clickable 'Practical' values
+const style = document.createElement('style');
+style.innerHTML = `
+    .searchable {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+`;
+document.head.appendChild(style);
 // Generate Part of Speech Dropdown
 function generatePartOfSpeechDropdown(data) {
 	const partOfSpeechDropdown = document.getElementById("partOfSpeechDropdown");
