@@ -285,7 +285,7 @@ function displayFullRange(headword) {
             for (const key in result) {
                 if (result[key] && result[key].trim() !== "") {
                     if (key.includes("audio")) {
-                        html += `<p><b>${key}:</b></p><audio class="audio-player" controls><source src="${result[key]}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
+                        html += `<p><b>${key}:</b></p><audio class="audio-player" controls><source src="Audio/${result[key]}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
                     } else {
                         html += `<p><b>${key}:</b> ${result[key]}</p>`;
                     }
