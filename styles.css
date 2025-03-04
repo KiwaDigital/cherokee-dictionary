@@ -6,7 +6,7 @@ body {
 
 /* General Styles */
 body {
-    font-family: Noto Sans Cherokee;
+    font-family: Noto Sans Cherokee, arial;
  	background-image: url("bg.png");
     margin: 0;
     padding: 0;
