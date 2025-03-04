@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support</title>
+    <title>Support Portal</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- Font Awesome for icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
@@ -36,10 +36,37 @@
         </nav>
     </header>
 
-    <!-- Main Content -->
+ <!-- Support Portal Container -->
     <div class="container">
-        <h1>Support<h1/>
-<p>This is your support portal</p>
+        <!-- Contact Box -->
+        <div class="support-box">
+            <h2>Contact</h2>
+            <p>Have questions? Reach out to our support team.</p>
+            <a href="#contact-form">Contact Form</a>
+        </div>
+
+        <!-- User Guide Box -->
+        <div class="support-box">
+            <h2>User Guide</h2>
+            <p>Access our comprehensive user guide for help.</p>
+            <a href="user-guide.pdf" target="_blank">Download User Guide</a>
+        </div>
+
+        <!-- Get Started Box -->
+        <div class="support-box">
+            <h2>Get Started</h2>
+            <p>Watch a quick video to get started.</p>
+            <a href="#" id="videoButton">Watch Video</a>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="modal-support">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Getting Started Video</h2>
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
     </div>
 
     <!-- Favourites Sidebar -->

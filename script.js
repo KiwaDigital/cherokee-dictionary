@@ -409,3 +409,26 @@ window.onclick = function(event) {
 		modal.style.display = "none";
 	}
         };
+        
+        // JavaScript to handle the video modal
+        const videoModal = document.getElementById("videoModal");
+        const videoButton = document.getElementById("videoButton");
+        const closeModal = document.getElementsByClassName("close")[0];
+
+        // Open the modal when the "Watch Video" button is clicked
+        videoButton.onclick = function(event) {
+            event.preventDefault();
+            videoModal.style.display = "flex";
+        };
+
+        // Close the modal when the close button is clicked
+        closeModal.onclick = function() {
+            videoModal.style.display = "none";
+        };
+
+        // Close the modal when clicking outside the modal content
+        window.onclick = function(event) {
+            if (event.target === videoModal) {
+                videoModal.style.display = "none";
+            }
+        };

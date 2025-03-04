@@ -15,6 +15,122 @@ body {
     color: #333;
 }
 
+/* PDF viewer */
+
+        .pdf-viewer {
+            height: 80vh;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            justify-content: center; /* Center the nav links */
+        }
+
+        .fallback {
+            text-align: center;
+            margin-top: 20px;
+    		color: #fff;
+        }
+        
+                }
+
+        .support-container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        .support-box {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            flex: 1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .support-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .support-box h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .support-box p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .support-box a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .support-box a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Modal Styles */
+        .modal-support {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 80%;
+            height: 80%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .support-container {
+                flex-direction: column;
+            }
+
+            .support-box {
+                margin-bottom: 20px;
+            }
+        }
+
 /* Slide menu */
 
 .header {
@@ -261,7 +377,7 @@ h1 {
 }
 
 #searchInput {
-    width: 70%;
+    width: 80%;
     padding: 10px;
     margin-right: 10px;
     border: 1px solid #ccc;
@@ -547,7 +663,7 @@ button:hover {
 /* Footer */
 
 .site-footer {
-    background-color: #333;
+/*  background-color: #333;*/
     padding: 20px 0;
     text-align: center;
 }
@@ -620,6 +736,7 @@ button:hover {
 .copyright-text {
     margin: 0;
     font-size: 14px;
+    margin-top: 20px;
 
 }
 @media (max-width:991px)
