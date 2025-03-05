@@ -70,8 +70,8 @@ function searchWord(searchTerm = null) {
                     if (row[key] && row[key].trim() !== "") {
                         if (key.includes("audio")) {
                             html += `<p><b>${key}:</b></p><audio class="audio-player" controls><source src="Audio/${row[key]}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
-                        } else if (key === "Practical") {
-                            // Add click event to 'Practical' values
+                        } else if (key === "Practical" || key.startsWith("Compare")) {
+                            // Add click event to 'Practical' and 'Compare' values
                             html += `<p><b>${key}:</b> <span class="searchable" onclick="searchWord('${row[key].toLowerCase()}')">${row[key]}</span></p>`;
                         } else {
                             html += `<p><b>${key}:</b> ${row[key]}</p>`;
@@ -97,7 +97,7 @@ function searchWord(searchTerm = null) {
     });
 }
 
-// Add CSS for the clickable 'Practical' values
+// Add CSS for the clickable 'Practical' and 'Compare' values
 const style = document.createElement('style');
 style.innerHTML = `
     .searchable {
@@ -107,6 +107,7 @@ style.innerHTML = `
     }
 `;
 document.head.appendChild(style);
+
 // Generate Part of Speech Dropdown
 function generatePartOfSpeechDropdown(data) {
 	const partOfSpeechDropdown = document.getElementById("partOfSpeechDropdown");
