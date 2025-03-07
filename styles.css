@@ -83,7 +83,7 @@ body {
             background-color: #0056b3;
         }
 
-        /* Modal Styles */
+/* Modal Styles */
         .modal-support {
             display: none;
             position: fixed;
@@ -120,7 +120,7 @@ body {
             color: #000;
         }
 
-        /* Responsive Design */
+/* Responsive Design */
         @media (max-width: 768px) {
             .support-container {
                 flex-direction: column;
@@ -160,12 +160,12 @@ body {
     letter-spacing: 1.25px;
 }
 #sidebarMenu {
+    padding-top: 60px;
     height: 100%;
     top: 0px;
     position: fixed;
     left: 0;
     width: 250px;
-    margin-top: 60px;
     transform: translateX(-250px);
     transition: transform 250ms ease-in-out;
     background: linear-gradient(180deg, #2F6695 0%, #0e2438 100%);
@@ -303,24 +303,26 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
         /* Button to trigger modal */
         #creditsButton {
-            background-color: #4CAF50;
+            background-color: #2F6695;
             color: white;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            margin-top: 20px;
         }
 
         #creditsButton:hover {
-            background-color: #45a049;
+            background-color: #005bb5;
         }
 
 /* Original CSS*/
 
 .logo img {
     height: 50px;
-    margin-left:20px;
+    margin-left:15px;
+    margin-top:10px;
+    margin-bottom: 5px;
 }
 
 nav {
@@ -392,6 +394,7 @@ button {
     color: #fff;
     border: none;
     border-radius: 4px;
+    margin-top: 20px;
 }
 
 button:hover {
