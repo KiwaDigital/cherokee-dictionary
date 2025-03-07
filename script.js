@@ -454,3 +454,25 @@ window.onclick = function(event) {
                 videoModal.style.display = "none";
             }
         };
+        
+        // Full-Screen Functionality
+        const fullscreenButton = document.getElementById('fullscreenButton');
+
+        fullscreenButton.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen(); // Request full-screen mode
+                fullscreenButton.innerHTML = '<i class="fas fa-compress"></i>'; // Change icon to compress
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen(); // Exit full-screen mode
+                    fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>'; // Change icon back to expand
+                }
+            }
+        });
+
+        // Listen for full-screen change events
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>'; // Reset icon if exiting full-screen
+            }
+        });
