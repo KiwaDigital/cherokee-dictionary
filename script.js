@@ -255,6 +255,7 @@ function displaySearchHistory() {
         const history = JSON.parse(localStorage.getItem("searchHistory")) || [];
         historyList.innerHTML = history.map(term => `<li><a href="#" class="history-term">${term}</a></li>`).join("");
 
+        // Add click event listeners to history terms
         document.querySelectorAll(".history-term").forEach(term => {
             term.addEventListener("click", (e) => {
                 e.preventDefault();
@@ -266,6 +267,54 @@ function displaySearchHistory() {
         console.error("Error accessing localStorage:", error);
     }
 }
+
+// Display search history
+function displaySearchHistory() {
+    const historyList = document.getElementById("historyList");
+    try {
+        const history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+        historyList.innerHTML = history.map(term => `<li><a href="#" class="history-term">${term}</a></li>`).join("");
+
+        // Add click event listeners to history terms
+        document.querySelectorAll(".history-term").forEach(term => {
+            term.addEventListener("click", (e) => {
+                e.preventDefault();
+                document.getElementById("searchInput").value = term.textContent;
+                searchWord();
+            });
+        });
+    } catch (error) {
+        console.error("Error accessing localStorage:", error);
+    }
+}
+
+// Toggle history sidebar visibility
+function toggleHistorySidebar() {
+    const historySidebar = document.getElementById("historySidebar");
+    if (historySidebar.style.display === "block") {
+        historySidebar.style.display = "none"; // Hide sidebar
+    } else {
+        historySidebar.style.display = "block"; // Show sidebar
+        displaySearchHistory(); // Load and display history
+    }
+}
+
+// Add event listener to the history link/button
+document.getElementById("historyLink").addEventListener("click", (e) => {
+    e.preventDefault(); // Prevent default link behavior
+    toggleHistorySidebar(); // Toggle the history sidebar
+});
+
+// Close history sidebar when the close button is clicked
+document.getElementById("closeHistoryButton").addEventListener("click", () => {
+    document.getElementById("historySidebar").style.display = "none";
+});
+
+document.getElementById("historyLink").addEventListener("click", (e) => {
+    e.preventDefault();
+    console.log("History link clicked"); // Debugging
+    toggleHistorySidebar();
+});
 
 // Clear search history
 function clearSearchHistory() {
